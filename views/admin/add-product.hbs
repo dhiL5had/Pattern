@@ -1,0 +1,49 @@
+<main>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="inputFirstName">Product Name</label>
+                                        <input class="form-control py-4" id="inputFirstName" type="text" />
+                                    </div>
+                                </div>
+                                <label class="small mb-1">Quantity</label>
+                                <div class="col-lg-3 mt-4">
+                                        <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
+                                          <span class="fas fa-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="quantity" name="quantity" class="form-control input-number" value="10" min="1" max="100">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                                            <span class="fas fa-plus"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                        </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="small mb-1" for="inputEmailAddress">Description</label>
+                                <input class="form-control py-4" id="inputEmailAddress" type="email"
+                                    aria-describedby="emailHelp"  />
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlFile1">Product Image</label>
+                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                            </div>
+                            <div class="form-group mt-4  align-items-center"><a class="btn btn-primary btn-block"
+                                    href="login.html">Create Account</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
