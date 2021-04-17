@@ -4,6 +4,8 @@ const {response} = require('../app');
 var router = express.Router();
 const productHelpers = require('../helpers/productHelpers');
 const userHelpers = require('../helpers/userHelpers');
+const {check , validationResult} = require('express-validator');
+const { ESTALE } = require('constants');
 
 const verifyLogin = (req,res,next)=>{
     if(req.session.user){
@@ -31,7 +33,17 @@ router.get('/login',(req,res)=>{
     res.render('user/user-login')
 })
 
-router.post('/login',(req,res)=>{
+router.post('/login',
+[
+    check('Email').notEmpty().isEmail().normalizeEmail(),
+    check('Password').notEmpty().isLength(6,16)
+],
+(req,res)=>{
+    const errors = validationResult(req)
+    console.log(errors);
+    if(errors.errors.length >=1){
+        res.redirect('/login')
+    }else{
     userHelpers.doLogin(req.body).then((response)=>{
         if(response.status){
             req.session.user = response.user;
@@ -41,18 +53,31 @@ router.post('/login',(req,res)=>{
             res.redirect('/login')
         }
     })
+}
 })
 
 router.get('/signup',(req,res)=>{
     res.render('user/user-signup')
 })
 
-router.post('/signup',(req,res)=>{
-    userHelpers.doSignup(req.body).then((response)=>{
-        req.session.user = response
-        req.session.user.loggedIn = true;
-        res.redirect('/');
+router.post('/signup',
+[
+    check('Name').notEmpty(),
+    check('Email').notEmpty().normalizeEmail(),
+    check('Phone').notEmpty().isNumeric().isLength(10),
+    check('Password').notEmpty().isLength(6,16),
+],
+(req,res)=>{
+    const errors = validationResult(req);
+    if(errors.errors.length >=1){
+        res.redirect('/signup')
+    }else{
+         userHelpers.doSignup(req.body).then((response)=>{
+            req.session.user = response
+            req.session.user.loggedIn = true;
+            res.redirect('/')
     })
+}
 })
 
 router.get('/logout',(req,res)=>{

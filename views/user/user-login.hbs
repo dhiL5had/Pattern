@@ -4,11 +4,13 @@
 				<div class="col-sm-4 col-sm-offset-4">
 					<div class="login-form"><!--login form-->
 						<h2>Login to your account</h2>
-						<form action="/login" method="POST">
-							<input type="email" name="Email" placeholder="Email" />
-							<input type="password" name="Password" placeholder="Password" />
+						<form  method="POST">
+							<input type="email" id="Email" name="Email" placeholder="Email" />
+							<span style="color: red;" id="emailError"></span>
+							<input type="password" id="Password" name="Password" placeholder="Password" />
+							<span style="color: red;" id="passError"></span>
 							<p>Don't have an Account? &nbsp;<a href="/signup">signup</a></p>
-							<button type="submit" class="btn btn-default">Login</button>
+							<button type="submit" id="log_btn" class="btn btn-default">Login</button>
 						</form>
 					</div><!--/login form-->
 				</div>
@@ -16,3 +18,35 @@
 			</div>
 		</div>
 	</section><!--/form-->
+
+	<script>
+		$('#log_btn').click(function(){
+
+			var logData = {
+				email:$('#Email').val(),
+				password:$('#Password').val()
+			}
+
+			if(logData.email == ''){
+				$('#emailError').html('email must  be given')
+			}if(logData.password == ''){
+				$('#passError').html('Password must be entered')
+			}else{
+				$.ajax({
+					url:'/login',
+					type:'POST',
+					data:logData,
+					dataType:'JSON',
+					success:(data){
+						if(data){
+							location.href('/')
+						}else{
+							location.reload('/login')
+						}
+					}
+				})
+			}
+
+		})
+
+	</script>
