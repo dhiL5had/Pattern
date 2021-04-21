@@ -1,0 +1,53 @@
+<section><br>
+    
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr align="center">
+                <th>#no</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>State</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr align="center">
+                <td>{{@index}}</td>
+                <td>{{this.Name}}</td>
+                <td>{{this.Email}}</td>
+                {{#if this.Phone}}
+                <td>{{this.Phone}}</td>
+                {{else}}
+                <td>Google/Facebook</td>
+                {{/if}}
+                <td>
+                    {{#if this.State}}
+                   <form action="/admin/blockuser/{{this._id}}" method="POST">
+                    <label class="btn btn-success">Active</label>
+                    <td><button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Do you want to Block {{this.Name}} ?')">Block</button></td>
+                        </form>
+                    {{else}}
+                    <form action="/admin/activateuser/{{this._id}}" method="POST">
+                    <label class="btn btn-danger">Blocked</label>
+                    <td><button type="submit" class="btn btn-success"
+                        onclick="return confirm('Do you want to Activate {{this.Name}} ?')">Activate</button></td>
+                        </form>
+                    {{/if}} 
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+</section>

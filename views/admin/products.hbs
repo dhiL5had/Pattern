@@ -1,0 +1,44 @@
+<section><br>
+    <div class="text-left">
+        <a class="btn btn-success" href="/admin/addproduct">Add Product</a>
+    </div><br>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr align="center">
+                <th>#no</th>
+                <th>Item</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Qunatity</th>
+                <th>Price</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr align="center">
+                <td>{{@index}}</td>
+                <td>{{this.Name}}</td>
+                <td><img style="width: 50px; height:50px;" src="/products/{{this._id}}.jpg" alt=""></td>
+                <td>{{this.Description}}</td>
+                <td>{{this.Quantity}}</td>
+                <td>{{this.Price}}</td>
+                <td >
+                    <a href="/admin/editproduct/{{this._id}}" class="btn btn-success">Edit</a>
+                    <a href="/admin/deleteproduct/{{this._id}}" class="btn btn-danger"
+                        onclick="return confirm('Do you want to delete {{this.Name}} ?')">Delete</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+</section>

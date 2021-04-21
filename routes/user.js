@@ -6,9 +6,13 @@ const productHelpers = require('../helpers/productHelpers');
 const userHelpers = require('../helpers/userHelpers');
 const {check , validationResult} = require('express-validator');
 const { ESTALE } = require('constants');
+const { rejects } = require('assert');
+const passport = require('passport');
+require('../auth');
 
 const verifyLogin = (req,res,next)=>{
-    if(req.session.user){
+    let user = req.session.user;
+    if(user){
         next()
     }else{
         res.redirect('/login')
@@ -17,20 +21,15 @@ const verifyLogin = (req,res,next)=>{
 
 router.get('/',(req,res)=>{
     let user = req.session.user;
-    res.render('user/view-products',{user})
-})
-
-router.get('/product-details',(req,res)=>{
-    res.render('user/product-details')
+    res.render('user/home',{user})
 })
 
 router.get('/login',(req,res)=>{
     if(req.session.user){
         res.redirect('/')
     }else{
-        res.render('user/user-login')
+        res.render('user/login')
     }
-    res.render('user/user-login')
 })
 
 router.post('/login',
@@ -40,24 +39,37 @@ router.post('/login',
 ],
 (req,res)=>{
     const errors = validationResult(req)
-    console.log(errors);
     if(errors.errors.length >=1){
-        res.redirect('/login')
+        res.redirect('loginError')
     }else{
-    userHelpers.doLogin(req.body).then((response)=>{
-        if(response.status){
-            req.session.user = response.user;
-            req.session.user.loggedIn = true;
-            res.redirect('/')
-        }else{
-            res.redirect('/login')
-        }
-    })
-}
+        userHelpers.doLogin(req.body).then((response)=>{
+            if(response.email){
+                response.email = false;
+                res.json({email:'emailError'})
+            }if(response.State){
+                response.State = false;
+                res.json({state:'blocked'})
+            }if(response.passError){     
+                response.passError = false;
+                res.json({pass:'Invalid'})
+            }
+            else if(response.login){
+                req.session.user = response.user._id;
+                req.session.user.loggedIn = true;
+                res.json({login:true})
+            }else{
+                res.redirect('/login')
+            }
+        })
+    }
 })
 
 router.get('/signup',(req,res)=>{
-    res.render('user/user-signup')
+    if(req.session.user){
+        res.redirect('/')
+    }else{
+        res.render('user/signup')
+    }
 })
 
 router.post('/signup',
@@ -70,14 +82,41 @@ router.post('/signup',
 (req,res)=>{
     const errors = validationResult(req);
     if(errors.errors.length >=1){
-        res.redirect('/signup')
+        res.send('signupError')
     }else{
          userHelpers.doSignup(req.body).then((response)=>{
-            req.session.user = response
-            req.session.user.loggedIn = true;
-            res.redirect('/')
+            if(response.email){
+                response.email = false;
+                res.json({email:'emailError'})
+            }
+            if(response.phone){
+                response = false;
+                res.json({phone:'phoneError'})
+            }else{
+                req.session.user = response._id
+                req.session.user.loggedIn = true;
+                response.signup = true
+                res.json(response)
+            }
+            
     })
 }
+})
+
+router.get('/google',passport.authenticate('google',{scope:['profile','email']}));
+
+router.get('/google/cb',passport.authenticate('google',{failureRedirect:'/login',session: false}),
+(req,res)=>{
+    req.session.user = req.user._id;
+    req.session.user.loggedIn = true
+    res.redirect('/');
+})
+
+router.get('/facebook',passport.authenticate('facebook',{scope:'email'}))
+
+router.get('/facebook/cb',passport.authenticate('facebook',{failureRedirect:'/login',session: false}),
+(req,res)=>{
+    res.redirect('/');
 })
 
 router.get('/logout',(req,res)=>{
@@ -85,24 +124,28 @@ router.get('/logout',(req,res)=>{
     res.redirect('/')
 })
 
-router.get('/whishlist',(req,res)=>{
-    res.render('user/user-whishlist')
+router.get('/productdetails',(req,res)=>{
+    res.render('user/product-details')
+})
+
+router.get('/wishlist',(req,res)=>{
+    res.render('user/wishlist')
 })
 
 router.get('/cart',(req,res)=>{
-    res.render('user/user-cart')
+    res.render('user/cart')
 })
 
 router.get('/placeorder',(req,res)=>{
-    res.render('user/user-placeorder')
+    res.render('user/placeorder')
 })
 
 router.get('/orders',(req,res)=>{
-    res.render('user/user-orders')
+    res.render('user/orders')
 })
 
 router.get('/checkout',(req,res)=>{
-    res.render('user/user-checkout')
+    res.render('user/checkout')
 })
 
 

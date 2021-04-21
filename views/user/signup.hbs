@@ -1,0 +1,109 @@
+
+<section id="form">
+	<div class="col-sm-4 col-sm-offset-4">
+		<div class="signup-form">
+			<h2>New User Signup!</h2>
+			<form id="signup_form" method="POST">
+				<span style="color: red; font-style: italic;" id="formError"></span>
+				<input type="text" id="name" name="Name" placeholder="Name" />
+				<input type="email" id="email" name="Email" placeholder="Email Address" />
+				<span style="color: red; font-style: italic;" id="emailError"></span>
+				<input type="tel" id="mobile" name="Phone" placeholder="Phone"/>
+				<span style="color: red; font-style: italic;" id="phoneError"></span>
+				<input type="password" id="password" name="Password" placeholder="Password" />
+				<input type="password" id="confirmPass" name="confirmPass" placeholder="Confirm Password" />
+				<span style="color: red; font-style: italic;" id="confPassError"></span>
+				<p class="">Already have an Account? &nbsp;<a href="/login">login</a></p>
+				<button type="submit" id="signup_btn" class="btn btn-default">Signup</button>
+			</form>
+		</div>
+	</div>
+</section>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script>
+	$(document).ready(function(){
+
+		$('#signup_form').validate({
+			rules:{
+				Name:{
+					required:true,
+					minlength:3
+				},
+				Email:{
+					required:true,
+					email:true
+				},
+				Phone:{
+					required:true,
+					minlength:10,
+					maxlength:10
+				},
+				Password:{
+					required:true,
+					minlength:6,
+					maxlength:16
+				},
+				confirmPass:{
+					required:true,
+					equalTo:'#password'
+				}
+			},
+			messages:{
+				Name:{
+					required:"Please enter your name",
+					minlength:"Name must be minimum 3 characters long"
+				},
+				Email:{
+					required:"Please enter your e-mail"
+				},
+				Phone:{
+					required:"Please enter your mobile number",
+					minlength:"Phone number must be 10 digit longer",
+					maxlength:"Phone number should be 10 digit longer"
+				},
+				Password:{
+					required:"Password can't be empty",
+					minlength:"Password must be atleast 6 characters long",
+					maxlength:"Password cannot be longer than 16 characters"
+				},
+				confirm:{
+					required:"Password should be confirmed",
+					equalTo:"Passwords should match"
+				}
+			}
+		});
+		});
+
+		$('#signup_btn').click(function(e){
+			 var isvalid = $("#signup_form").valid();
+			 if(isvalid){
+			e.preventDefault();
+			$.ajax({
+				url:'/signup',
+				data:$('#signup_form').find('input[name!=confirmPass]').serialize(),
+				method:'post',
+
+				success:((response)=>{
+					if(response.signup){
+						window.location.replace('/')
+					}if(response.email == 'emailError'){
+						$('#emailError').html('Email already in use')
+						$('#email,#password,#confirmPass').val('')
+						$(':input[type="submit"]').prop('disabled', false);
+					}if(response.phone == 'phoneError'){
+						$('#phoneError').html('Phone number already in use')
+						$('#mobile,#password,#confirmPass').val('')
+						$(':input[type="submit"]').prop('disabled', false);
+					}if(response == 'signupError'){
+						$('#emailError,#phoneError').val('')
+						$('#formError').html("Couldn't signup, please try again")
+						$(':input[type="submit"]').prop('disabled', false);
+					}
+				})
+				})
+			}
+		})
+		
+
+</script>
