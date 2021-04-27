@@ -1,11 +1,13 @@
 var express = require('express');
-const {
-    response
-} = require('../app');
+const {response} = require('../app');
+const multer = require('multer')
+const path = require('path')
 const userHelpers = require('../helpers/userHelpers');
 const adminHelpers = require('../helpers/adminHelpers')
+const {check , validationResult} = require('express-validator');
 const productHelpers = require('../helpers/productHelpers')
 var router = express.Router();
+const base64ToImage = require('base64-to-image');
 const verifyLogin = (req, res, next) => {
     if (req.session.admin) {
         next()
@@ -59,46 +61,110 @@ router.get('/products', (req, res) => {
             admin: true,
             products
         })
+
     })
 
 })
 
 router.get('/addproduct', (req, res) => {
-    res.render('admin/addproduct', {
-        admin: true
-    })
+    productHelpers.getCategories().then((categories)=>{
+    res.render('admin/addproduct', {admin: true,categories})
+})
 })
 
-router.post('/addproduct', (req, res) => {
-    productHelpers.addProduct(req.body, (id) => {
-        let image = req.files.image;
-        console.log("image",image);
-        image.mv('./public/products/' + id + '.jpg', (err) => {
-            if (!err) {
-                res.redirect("/admin/products")
-            } else {
-                console.log(err);
-            }
-        });
+router.post('/addproduct',
+[
+    check('Name').notEmpty(),
+    check('Price').isNumeric().notEmpty(),
+    check('Category').notEmpty(),
+    check('Quantity').notEmpty(),
+    check('Description').notEmpty(),
+    check('viewImg1').notEmpty(),
+    check('viewImg2').notEmpty(),
+    check('viewImg3').notEmpty()
+],
+ (req, res) => {
+    const errors = validationResult(req);
+    if(errors.errors.length >=1){
+        res.redirect('/admin/addproduct')
+    }else{
+        let data = {
+            Name :req.body.Name,
+            Price:req.body.Price,
+            Category:req.body.Category,
+            Quantity:req.body.Quantity,
+            Description:req.body.Description,
+        }
+    productHelpers.addProduct(data, (id) => {
+        var path = './public/images/products/';
+        var prop1 = { fileName:id+1, type:"jpg"}
+        var prop2 = { fileName:id+2, type:"jpg"}
+        var prop3 = { fileName:id+3, type:"jpg"}
+
+        var img1 = req.body.viewImg1;
+        base64ToImage(img1,path,prop1)
+
+        var img2 = req.body.viewImg2;
+        base64ToImage(img2,path,prop2)
+
+        var img3 = req.body.viewImg3;
+        base64ToImage(img3,path,prop3)
+
+        res.redirect('/admin/products')
     });
+}
 })
 
 router.get('/editproduct/:id', async(req, res) => {
     let product = await productHelpers.getProductDetails(req.params.id)
+    productHelpers.getCategories().then((categories)=>{
     res.render('admin/editproduct', {
-        admin: true, product
+        admin: true, product,categories
     })
 })
+})
 
-router.post('/editproduct/:id',(req,res)=>{
-    let id = req.params.id;
-    productHelpers.updateProduct(req.body,id).then(()=>{
-        res.redirect('/admin/products')
-        if(req.files.image){
-            let image = req.files.image
-            image.mv('./public/products/'+id+'.jpg')
+router.post('/editproduct/:id',
+[
+    check('Name').notEmpty(),
+    check('Price').isNumeric().notEmpty(),
+    check('Category').notEmpty(),
+    check('Quantity').notEmpty(),
+    check('Description').notEmpty(),
+],
+(req, res) => {
+    const errors = validationResult(req);
+    if(errors.errors.length >=1){
+        res.redirect('/admin/addproduct')
+    }else{
+        let data = {
+            Name :req.body.Name,
+            Price:req.body.Price,
+            Category:req.body.Category,
+            Quantity:req.body.Quantity,
+            Description:req.body.Description,
         }
+    let id = req.params.id;
+    productHelpers.updateProduct(data,id).then(()=>{
+        var path = './public/images/products/';
+        var prop1 = { fileName:id+1, type:"jpg"}
+        var prop2 = { fileName:id+2, type:"jpg"}
+        var prop3 = { fileName:id+3, type:"jpg"}
+        if(req.body.viewImg1){
+            var img1 = req.body.viewImg1;
+            base64ToImage(img1,path,prop1)
+        }
+        if(req.body.viewImg2){
+            var img2 = req.body.viewImg2;
+            base64ToImage(img2,path,prop2)
+        }
+        if(req.body.viewImg3){
+            var img3 = req.body.viewImg3;
+            base64ToImage(img3,path,prop3)
+        }
+        res.redirect('/admin/products');
     })
+    }
 })
 
 router.get('/deleteproduct/:id',(req,res)=>{
@@ -126,4 +192,23 @@ router.post('/blockuser/:id',(req,res)=>{
     })
 })
 
+router.get('/addcategory',(req,res)=>{
+    productHelpers.getCategories().then((categories)=>{
+    res.render('admin/addcategory',{admin:true,categories})
+    }).catch(()=>{
+        res.render('admin/addcategory',{admin:true})
+    })
+})
+
+router.post('/addcategory',(req,res)=>{
+    productHelpers.addcategory(req.body).then(()=>{
+        res.redirect('/admin/addcategory')
+    })
+})
+
+router.get('/deletecategory/:id',(req,res)=>{
+    productHelpers.deleteCategory(req.params.id).then(()=>{
+        res.redirect('/admin/addcategory')
+    })
+})
 module.exports = router;

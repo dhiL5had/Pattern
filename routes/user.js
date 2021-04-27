@@ -8,6 +8,7 @@ const {check , validationResult} = require('express-validator');
 const { ESTALE } = require('constants');
 const { rejects } = require('assert');
 const passport = require('passport');
+const { getProductDetails } = require('../helpers/productHelpers');
 require('../auth');
 
 const verifyLogin = (req,res,next)=>{
@@ -21,8 +22,12 @@ const verifyLogin = (req,res,next)=>{
 
 router.get('/',(req,res)=>{
     let user = req.session.user;
-    res.render('user/home',{user})
-})
+        productHelpers.getAllProducts().then((products)=>{
+            console.log(products);
+            res.render('user/home',{user,products})
+            })
+    })
+   
 
 router.get('/login',(req,res)=>{
     if(req.session.user){
@@ -124,8 +129,13 @@ router.get('/logout',(req,res)=>{
     res.redirect('/')
 })
 
-router.get('/productdetails',(req,res)=>{
-    res.render('user/product-details')
+router.get('/productdetails/:id',(req,res)=>{
+    let proId = req.params.id;
+    productHelpers.getProductDetails(proId).then((product)=>{
+    res.render('user/productdetails',{product})
+    }).catch(()=>{
+        res.redirect('/');
+    })
 })
 
 router.get('/wishlist',(req,res)=>{
