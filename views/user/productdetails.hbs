@@ -1,92 +1,260 @@
+<style>
+    body {
+        font-family: Arial;
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    img {
+        vertical-align: middle;
+    }
+
+    /* Position the image container (needed to position the left and right arrows) */
+    .container {
+        position: relative;
+    }
+
+    /* Hide the images by default */
+    .mySlides {
+        display: none;
+    }
+
+    /* Add a pointer when hovering over the thumbnail images */
+    .cursor {
+        cursor: pointer;
+    }
+
+    /* Next & previous buttons */
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 40%;
+        width: auto;
+        padding: 16px;
+        margin-top: -50px;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover,
+    .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+        color: #f2f2f2;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    /* Container for image text */
+    .caption-container {
+        text-align: center;
+        background-color: #222;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Six columns side by side */
+    .column {
+        float: left;
+        width: 16.66%;
+    }
+
+    /* Add a transparency effect for thumnbail images */
+    .demo {
+        opacity: 0.6;
+    }
+
+    .active,
+    .demo:hover {
+        opacity: 1;
+    }
+</style>
 <section>
-		<div class="container">
-			<div class="row">	
-				<div class="col-sm-10 padding-right">
-					<div class="product-details"><!--product-details-->
-						<div class="col-sm-5">
-							<div class="view-product">
-								<img src="images/product-details/1.jpg" alt="" />
-								<h3>ZOOM</h3>
-							</div>
-							<div id="similar-product"  data-ride="carousel">
-								
-								  <!-- Wrapper for slides -->
-								    <div class="carousel-inner">
-										<div class="item active">
-										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-										</div>
-									</div>
+    <div class="container">
+        <div class="row">
+        <div class="mySlides">
+            <img src="/images/products/{{product._id}}1.jpg" style="width:100%">
+        </div>
 
-							</div>
+        <div class="mySlides">
+            <img src="/images/products/{{product._id}}2.jpg" style="width:100%">
+        </div>
 
-						</div>
-						<div class="col-sm-7">
-							<div class="product-information"><!--/product-information-->
-								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
-								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
-								<p>Web ID: 1089772</p>
-								<img src="images/product-details/rating.png" alt="" />
-								<spatan>
-									<span>US $59</span>
-									<button type="button" class="btn btn-fefault cart">
-										<i class="fa fa-shopping-cart"></i>
-										Add to cart
-									</button>
-								</spatan>
-								<p><b>Availability:</b> In Stock</p>
-								<p><b>Condition:</b> New</p>
-								<p><b>Brand:</b> E-SHOPPER</p>
-							</div><!--/product-information-->
-						</div>
-					</div><!--/product-details-->
-					
-					
-					
-					<div class="recommended_items"><!--recommended_items-->
-						<h2 class="title text-center">Related items</h2>
-						
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="item active">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-								<i class="fa fa-angle-left"></i>
-							  </a>
-							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-								<i class="fa fa-angle-right"></i>
-							  </a>			
-						</div>
-					</div><!--/recommended_items-->
-				</div>
-			</div>
-		</div>
-	</section>
+        <div class="mySlides">
+            <img src="/images/products/{{product._id}}3.jpg" style="width:100%">
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+
+        <div class="caption-container">
+            <p id="caption"></p>
+        </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <img class="demo cursor" src="/images/products/{{product._id}}1.jpg" style="width:100%" onclick="currentSlide(1)">
+            </div>
+            <div class="column">
+                <img class="demo cursor" src="/images/products/{{product._id}}2.jpg" style="width:100%" onclick="currentSlide(2)">
+            </div>
+            <div class="column">
+                <img class="demo cursor" src="/images/products/{{product._id}}3.jpg" style="width:100%" onclick="currentSlide(3)">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 pt-5">
+                <div class="product-details">
+                    <!--product-details-->
+                    <div>
+                        <div class="product-information">
+                            <!--/product-information-->
+                            <h2>{{product.Name}}</h2>
+                            <span>
+                                <span>Rs.{{product.Price}}</span>
+                                <label>Quantity:</label>
+                                <input type="text" name="quantity" value="1" />
+                                <a type="button" href="/addtocart/{{product._id}}" class="btn btn-warning cart">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    Add to cart
+                                </a>
+                                <a type="button" href="/addtowishlist/{{product._id}}" class="btn btn-warning cart">
+                                    <i class="fa fa-plus-square"></i>
+                                    Add to wishlist
+                                </a>
+                            </span>
+                            <p><b>Availability:</b>{{product.stock}}</p>
+                            <p><b>Description:</b>{{product.Description}}</p>
+                        </div>
+                        <!--/product-information-->
+                    </div>
+                </div>
+                <!--/product-details-->
+            </div>
+        </div>
+        <div class="recommended_items mt-5">
+            <!--recommended_items-->
+            <h2 class="title text-center">Related items</h2>
+
+            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend1.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend2.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend3.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend1.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend2.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/recommend3.jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart"><i
+                                                class="fa fa-shopping-cart"></i>Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+        <!--/recommended_items-->
+    </div>
+</section>

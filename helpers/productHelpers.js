@@ -12,7 +12,7 @@ module.exports = {
        })
 
         },
-        
+
     addProduct:(product,proId)=>{
         db.get().collection('products').insertOne(product).then((data)=>{
             proId(data.ops[0]._id)
@@ -21,7 +21,7 @@ module.exports = {
 
     getProductDetails:(proId)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId(proId)}).then((product)=>{
+             db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId(proId)}).then((product)=>{
                 resolve(product)
             })
         })

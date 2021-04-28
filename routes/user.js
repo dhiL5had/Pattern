@@ -9,6 +9,7 @@ const { ESTALE } = require('constants');
 const { rejects } = require('assert');
 const passport = require('passport');
 const { getProductDetails } = require('../helpers/productHelpers');
+const { route } = require('./admin');
 require('../auth');
 
 const verifyLogin = (req,res,next)=>{
@@ -23,7 +24,6 @@ const verifyLogin = (req,res,next)=>{
 router.get('/',(req,res)=>{
     let user = req.session.user;
         productHelpers.getAllProducts().then((products)=>{
-            console.log(products);
             res.render('user/home',{user,products})
             })
     })
@@ -130,20 +130,44 @@ router.get('/logout',(req,res)=>{
 })
 
 router.get('/productdetails/:id',(req,res)=>{
-    let proId = req.params.id;
-    productHelpers.getProductDetails(proId).then((product)=>{
-    res.render('user/productdetails',{product})
-    }).catch(()=>{
-        res.redirect('/');
+    let user = req.session.user;
+    productHelpers.getProductDetails(req.params.id).then((product)=>{
+    res.render('user/productdetails',{user,product})
     })
 })
 
-router.get('/wishlist',(req,res)=>{
-    res.render('user/wishlist')
+router.get('/addtowishlist/:id',(req,res)=>{
+        userHelpers.addToWishlist(req.params.id,req.session.user).then(()=>{
+            res.redirect('/wishlist')
+}).catch(()=>{
+    res.redirect('/wishlist');
+})
 })
 
-router.get('/cart',(req,res)=>{
-    res.render('user/cart')
+router.get('/wishlist',verifyLogin,(req,res)=>{
+    let user = req.session.user;
+    userHelpers.getWishProducts(user).then((wish)=>{
+        res.render('user/wishlist',{wish,user})
+    }).catch(()=>{
+        res.render('user/wishlist',{user})
+    })
+})
+
+router.get('/deletewish/:id',(req,res)=>{
+    let prod = req.params.id;
+    let user = req.session.user;
+    console.log('product',prod);
+    userHelpers.deleteWish(prod,user).then(()=>{
+        res.redirect('/wishlist')
+    })
+})
+
+router.get('/cart',verifyLogin,(req,res)=>{
+    let user = req.session.user;
+    // userHelpers.getCartProducts(user).then((cart)=>{
+    //     res.render('user/cart',{cart,user})
+    // })
+    res.render('user/cart',{user})
 })
 
 router.get('/placeorder',(req,res)=>{
