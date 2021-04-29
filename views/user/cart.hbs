@@ -8,45 +8,52 @@
 			</ol>
 		</div>
 		<div class="table-responsive cart_info">
-			<table class="table table-condensed">
+			<table class="table table-condensed" id="tablised">
 				<thead>
 					<tr class="cart_menu">
 						<td class="image">Item</td>
-						<td class="description"></td>
+						<td class="description">Name</td>
 						<td class="price">Price</td>
 						<td class="quantity">Quantity</td>
 						<td class="total">Total</td>
 						<td></td>
 					</tr>
 				</thead>
+				{{#each cart}}
 				<tbody>
 					<tr>
 						<td class="cart_product">
-							<a href=""><img src="images/cart/one.png" alt=""></a>
+							<a href=""><img style="width: 50px; height:auto;"
+									src="/images/products/{{this.product._id}}1.jpg" alt=""></a>
 						</td>
 						<td class="cart_description">
-							<h4><a href="">Colorblock Scuba</a></h4>
-							<p>Web ID: 1089772</p>
+							<h4><a href="/productdetails/{{this.product._id}}">{{this.product.Name}}</a></h4>
 						</td>
 						<td class="cart_price">
-							<p>$59</p>
+							<p>{{this.product.Price}}</p>
 						</td>
 						<td class="cart_quantity">
 							<div class="cart_quantity_button">
-								<a class="cart_quantity_up" href=""> + </a>
-								<input class="cart_quantity_input" type="text" name="quantity" value="1"
-									autocomplete="off" size="2">
-								<a class="cart_quantity_down" href=""> - </a>
+								<button class="cart_quantity_down" id="{{this.product._id}}m"
+									onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1)"> -
+								</button>
+								<span id="{{this.product._id}}">{{this.quantity}}</span>
+								<button class="cart_quantity_up" id="plus"
+									onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)"> +
+								</button>
 							</div>
 						</td>
 						<td class="cart_total">
-							<p class="cart_total_price">$59</p>
+							<p class="cart_total_price" id="{{this.product._id}}total">{{this.prototal}}</p>
 						</td>
 						<td class="cart_delete">
-							<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+							<button class="cart_quantity_delete" data-toggle="modal" data-target="#exampleModalCenter"
+								onclick="removeproduct('{{this._id}}','{{this.product._id}}')"><i
+									class="fa fa-times"></i></button>
 						</td>
 					</tr>
 				</tbody>
+				{{/each}}
 			</table>
 		</div>
 	</div>
@@ -55,23 +62,21 @@
 
 <section id="do_action">
 	<div class="container">
-		<div class="row">
-			<div class="col-sm-6">
+		<div class="row ">
+			<div class="col-sm-6 pull-right">
 				<div class="total_area">
 					<ul>
-						<li>Cart Sub Total <span>$59</span></li>
+						<li>Cart Sub Total <span>Rs.<span id="total">{{total}}</span></span></li>
 						<li>Shipping Cost <span>Free</span></li>
-						<li>Total <span>$61</span></li>
+						<li>Total <span>Rs.<span id="grandtotal">{{total}}</span></span></li>
 					</ul>
-					<a class="btn btn-default update" href="">Update</a>
-					<a class="btn btn-default check_out" href="">Check Out</a>
+					<a class="btn btn-default update" href="/">Update</a>
+					<a class="btn btn-default check_out" href="/placeorder">Check Out</a>
 				</div>
 			</div>
 		</div>
-
 	</div>
 </section>
-<!--/#do_action-->
 {{else}}
 <div class="content-404 text-center">
 	<img src="/images/404/404.png" class="img-responsive" alt="" />
@@ -82,3 +87,52 @@
 </div>
 
 {{/if}}
+
+<script>
+	function changeQuantity(cartId, proId, userId, count) {
+		let quant = document.getElementById(proId).innerHTML;
+		let quantity = parseInt(quant);
+		count = parseInt(count)
+
+		$.ajax({
+			url: '/changequantity',
+			data: {
+				user: userId,
+				cart: cartId,
+				product: proId,
+				count: count,
+				quantity: quantity
+			},
+			method: 'post',
+			success: (response) => {
+				console.log(response)
+				if (response.minus) {
+					console.error("can't decrement!!, only one product left")
+				} else {
+					document.getElementById(proId+'total').innerHTML = response.prototal
+					document.getElementById(proId).innerHTML = quantity + count;
+					document.getElementById('total').innerHTML = response.total
+					document.getElementById('grandtotal').innerHTML = response.total
+				}
+			}
+		})
+	}
+
+	function removeproduct(cartId, proId) {
+		$.ajax({
+			url: '/removeproduct',
+			data: {
+				cart: cartId,
+				product: proId
+			},
+			method: 'post',
+			success: (response) => {
+				if (response.removed) {
+					location.reload('/cart')
+				} else {
+					alert("couldn't remove item")
+				}
+			}
+		})
+	}
+</script>

@@ -75,7 +75,7 @@ router.get('/addproduct', (req, res) => {
 router.post('/addproduct',
 [
     check('Name').notEmpty(),
-    check('Price').isNumeric().notEmpty(),
+    check('Price').notEmpty(),
     check('Category').notEmpty(),
     check('Quantity').notEmpty(),
     check('Description').notEmpty(),
@@ -84,9 +84,12 @@ router.post('/addproduct',
     check('viewImg3').notEmpty()
 ],
  (req, res) => {
+     req.body.Price = parseInt(req.body.Price)
+     req.body.Quantity = parseInt(req.body.Quantity)
+
     const errors = validationResult(req);
     if(errors.errors.length >=1){
-        res.redirect('/admin/addproduct')
+        res.redirect('/admin/addproduct',{err:'Please try again'})
     }else{
         let data = {
             Name :req.body.Name,

@@ -98,38 +98,7 @@
 <section>
     <div class="container">
         <div class="row">
-        <div class="mySlides">
-            <img src="/images/products/{{product._id}}1.jpg" style="width:100%">
-        </div>
-
-        <div class="mySlides">
-            <img src="/images/products/{{product._id}}2.jpg" style="width:100%">
-        </div>
-
-        <div class="mySlides">
-            <img src="/images/products/{{product._id}}3.jpg" style="width:100%">
-        </div>
-
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-
-        <div class="caption-container">
-            <p id="caption"></p>
-        </div>
-        </div>
-        <div class="row">
-            <div class="column">
-                <img class="demo cursor" src="/images/products/{{product._id}}1.jpg" style="width:100%" onclick="currentSlide(1)">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="/images/products/{{product._id}}2.jpg" style="width:100%" onclick="currentSlide(2)">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="/images/products/{{product._id}}3.jpg" style="width:100%" onclick="currentSlide(3)">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 pt-5">
+            <div class="col-md-7 pt-5">
                 <div class="product-details">
                     <!--product-details-->
                     <div>
@@ -138,18 +107,22 @@
                             <h2>{{product.Name}}</h2>
                             <span>
                                 <span>Rs.{{product.Price}}</span>
-                                <label>Quantity:</label>
-                                <input type="text" name="quantity" value="1" />
                                 <a type="button" href="/addtocart/{{product._id}}" class="btn btn-warning cart">
                                     <i class="fa fa-shopping-cart"></i>
-                                    Add to cart
+                                    cart
                                 </a>
                                 <a type="button" href="/addtowishlist/{{product._id}}" class="btn btn-warning cart">
-                                    <i class="fa fa-plus-square"></i>
-                                    Add to wishlist
+                                    <i class="fa fa-heart"></i>
+                                    wishlist
                                 </a>
                             </span>
-                            <p><b>Availability:</b>{{product.stock}}</p>
+                            <p><b>Availability:</b>
+                            {{!-- {{#if product.Quantity > 0}}
+                            <span>Available</span>
+                            {{else}}
+                            <span>Out of stock</span>
+                            {{/if}} --}}
+                            </p>
                             <p><b>Description:</b>{{product.Description}}</p>
                         </div>
                         <!--/product-information-->
@@ -160,16 +133,17 @@
         </div>
         <div class="recommended_items mt-5">
             <!--recommended_items-->
-            <h2 class="title text-center">Related items</h2>
+            <h2 class="title text-center">Recommended items</h2>
 
             <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="item active">
+                        {{#each product}}
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
-                                        <img src="images/home/recommend1.jpg" alt="" />
+                                        <img src="/images/products/{{product._id}}1.jpg" alt="" />
                                         <h2>$56</h2>
                                         <p>Easy Polo Black Edition</p>
                                         <button type="button" class="btn btn-default add-to-cart"><i
@@ -178,32 +152,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend3.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {{/each}}
                     </div>
                     <div class="item">
                         <div class="col-sm-4">
@@ -211,32 +160,6 @@
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend2.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend3.jpg" alt="" />
                                         <h2>$56</h2>
                                         <p>Easy Polo Black Edition</p>
                                         <button type="button" class="btn btn-default add-to-cart"><i

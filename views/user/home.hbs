@@ -65,7 +65,7 @@
 <section>
 	<div class="container ">
 		<div class="row">
-			<div class="col-sm-9 padding-right">
+			<div class="col-sm-12">
 				{{!-- <div class="category-tab">
 					<!--category-tab-->
 					{{#if categories}}
@@ -109,22 +109,22 @@
 							<div class="single-products">
 								<div class="productinfo text-center">
 									<img src="/images/products/{{this._id}}1.jpg" style="width: 90px; height:auto" alt="Products main image" />
-									<h2>Rs.{{this.Price}}</h2>
-									<p>{{this.name}}</p>
+									<h2>{{this.Name}}</h2>
+									<p>Rs.{{this.Price}}</p>
 									
 								</div>
 								<div class="product-overlay">
 									<div class="overlay-content">
-										<h2>Rs.{{this.Price}}</h2>
-										<p>{{this.name}}</p>
+										<h2>{{this.Name}}</h2>
+										<p>Rs.{{this.Price}}</p>
 										<a href="/productdetails/{{this._id}}" class="btn btn-default add-to-cart"><i></i>View Details</a>
 									</div>
 								</div>
 							</div>
 							<div class="choose">
 								<ul class="nav nav-pills nav-justified">
-									<li><a href="/addtowishlist/{{this._id}}"><i class="fa fa-plus-square"></i>wishlist</a></li>
-									<li><a href="/addtocart/{{this._id}}"><i class="fa fa-shopping-cart"></i>cart</a></li>
+									<li><a href="/addtowishlist/{{this._id}}"><i class="fa fa-heart"></i></a></li>
+									<li><a href="/addtocart/{{this._id}}"><i class="fa fa-shopping-cart"></i></a></li>
 								</ul>
 							</div>
 						</div>
