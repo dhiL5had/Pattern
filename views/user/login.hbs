@@ -71,6 +71,7 @@
 				success:((response)=>{
 					if(response.login){
 						window.location.replace('/')
+						{{!-- console.log(response.data); --}}
 					}
 					if(response.State == 'Blocked'){
 						$('#formError').html('Your account has been blocked')

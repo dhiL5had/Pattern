@@ -1,100 +1,4 @@
-<style>
-    body {
-        font-family: Arial;
-        margin: 0;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    img {
-        vertical-align: middle;
-    }
-
-    /* Position the image container (needed to position the left and right arrows) */
-    .container {
-        position: relative;
-    }
-
-    /* Hide the images by default */
-    .mySlides {
-        display: none;
-    }
-
-    /* Add a pointer when hovering over the thumbnail images */
-    .cursor {
-        cursor: pointer;
-    }
-
-    /* Next & previous buttons */
-    .prev,
-    .next {
-        cursor: pointer;
-        position: absolute;
-        top: 40%;
-        width: auto;
-        padding: 16px;
-        margin-top: -50px;
-        color: white;
-        font-weight: bold;
-        font-size: 20px;
-        border-radius: 0 3px 3px 0;
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    /* Position the "next button" to the right */
-    .next {
-        right: 0;
-        border-radius: 3px 0 0 3px;
-    }
-
-    /* On hover, add a black background color with a little bit see-through */
-    .prev:hover,
-    .next:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    /* Number text (1/3 etc) */
-    .numbertext {
-        color: #f2f2f2;
-        font-size: 12px;
-        padding: 8px 12px;
-        position: absolute;
-        top: 0;
-    }
-
-    /* Container for image text */
-    .caption-container {
-        text-align: center;
-        background-color: #222;
-        padding: 2px 16px;
-        color: white;
-    }
-
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    /* Six columns side by side */
-    .column {
-        float: left;
-        width: 16.66%;
-    }
-
-    /* Add a transparency effect for thumnbail images */
-    .demo {
-        opacity: 0.6;
-    }
-
-    .active,
-    .demo:hover {
-        opacity: 1;
-    }
-</style>
+<script src="../js/addTo.js"></script>
 <section>
     <div class="container">
         <div class="row">
@@ -107,21 +11,22 @@
                             <h2>{{product.Name}}</h2>
                             <span>
                                 <span>Rs.{{product.Price}}</span>
-                                <a type="button" href="/addtocart/{{product._id}}" class="btn btn-warning cart">
+                                <a type="button" onclick="addToCart('{{product._id}}')" class="btn btn-warning cart">
                                     <i class="fa fa-shopping-cart"></i>
                                     cart
                                 </a>
-                                <a type="button" href="/addtowishlist/{{product._id}}" class="btn btn-warning cart">
+                                <a type="button" onclick="addToWishlist('{{product._id}}')"
+                                    class="btn btn-warning cart">
                                     <i class="fa fa-heart"></i>
                                     wishlist
                                 </a>
                             </span>
                             <p><b>Availability:</b>
-                            {{!-- {{#if product.Quantity > 0}}
-                            <span>Available</span>
-                            {{else}}
-                            <span>Out of stock</span>
-                            {{/if}} --}}
+                                {{!-- {{#if product.Quantity > 0}}
+                                <span>Available</span>
+                                {{else}}
+                                <span>Out of stock</span>
+                                {{/if}} --}}
                             </p>
                             <p><b>Description:</b>{{product.Description}}</p>
                         </div>
@@ -133,50 +38,36 @@
         </div>
         <div class="recommended_items mt-5">
             <!--recommended_items-->
-            <h2 class="title text-center">Recommended items</h2>
+            <h2 class="title text-center">Related items</h2>
+                {{#each catproducts}}
+                <div class="col-sm-3">
+                    <div class="product-image-wrapper">
+                        <div class="single-products">
+                            <div class="productinfo text-center">
+                                <img src="/images/products/{{this._id}}1.jpg" style="width: 90px; height:auto"
+                                    alt="Products main image" />
+                                <h2>{{this.Name}}</h2>
+                                <p>Rs.{{this.Price}}</p>
 
-            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="item active">
-                        {{#each product}}
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="/images/products/{{product._id}}1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
+                            </div>
+                            <div class="product-overlay">
+                                <div class="overlay-content">
+                                    <h2>{{this.Name}}</h2>
+                                    <p>Rs.{{this.Price}}</p>
+                                    <a href="/productdetails/{{this._id}}"
+                                        class="btn btn-default add-to-cart"><i></i>View Details</a>
                                 </div>
                             </div>
                         </div>
-                        {{/each}}
-                    </div>
-                    <div class="item">
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="images/home/recommend1.jpg" alt="" />
-                                        <h2>$56</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <button type="button" class="btn btn-default add-to-cart"><i
-                                                class="fa fa-shopping-cart"></i>Add to cart</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="choose">
+                            <ul class="nav nav-pills nav-justified">
+                                <li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+                                <li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
+                {{/each}}
         </div>
         <!--/recommended_items-->
     </div>

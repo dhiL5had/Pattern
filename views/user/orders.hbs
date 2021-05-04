@@ -1,62 +1,59 @@
-	<section id="cart_items">
-		<div class="container">
-			<div class="breadcrumbs">
-				<ol class="breadcrumb">
-					<li><a href="#">Home</a></li>
-					<li class="active">Orders</li>
-				</ol>
-			</div>
-			<div class="table-responsive cart_info">
-				<table class="table table-condensed">
-					<thead>
-						<tr class="cart_menu">
-							<td class="image"></td>
-							<td class="image">Item</td>
-							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
-							<td></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="car_product">
-								Delivery Address
-								<address>
-									Mohammed Dhilshad <br>
-									Nellikkode UL cyberpark,<br>
-									UL cyber Park Kozhikode, Kerala - 673016,<br>
-									Phone number7994550151 <br>
-								</address>
-
-							</td>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<input class="cart_quantity_input" type="text" name="quantity" value="1"
-										autocomplete="off" size="2" disabled>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href="">cancel order</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+{{#if orders}}
+<section id="cart_items">
+	<div class="container">
+		<div class="breadcrumbs">
+			<ol class="breadcrumb">
+				<li><a href="#">Home</a></li>
+				<li class="active">Orders</li>
+			</ol>
 		</div>
-	</section>
-	<!--/#cart_items-->
+		<div class="table-responsive cart_info">
+			<table class="table table-condensed">
+				<thead>
+					<tr class="cart_menu">
+						<td class="image">Address</td>
+						<td class="image">Item</td>
+						<td class="total">Price</td>
+						<td class="description">Edit</td>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each orders}}
+					<tr>
+						<td class="car_product">
+							Delivery Address
+							<address>
+								{{this.deliveryDetails.address}}<br>
+								{{this.deliveryDetails.state}}{{this.deliveryDetails.city}}<br>
+								{{this.deliveryDetails.pincode}}<br>
+							</address>
+
+						</td>
+						<td class="cart_description">
+							<h4><a href="/orderdetails/{{this._id}}">View Order Details</a></h4>
+							<p>order ID:{{this._id}}</p>
+						</td>
+						<td class="cart_total">
+							<p class="cart_total_price">Rs.{{this.totalamount}}
+							</p>
+						</td>
+						<td class="">
+							<a class="btn btn-warning" href="/cancelorder/{{this._id}}">cancel order</a>
+						</td>
+					</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</section>
+<!--/#cart_items-->
+{{else}}
+<div class="content-404 text-center">
+	<img src="/images/404/404.png" class="img-responsive" alt="" />
+	<h1><b>OPPS!</b> We Couldn’t Find any Order History</h1>
+	<p>Start Ordering now!
+	</p>
+	<h2><a href="/">Go back to home</a></h2>
+</div>
+{{/if}}

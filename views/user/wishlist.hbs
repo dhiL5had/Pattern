@@ -1,3 +1,4 @@
+<script src="../js/addTo.js"></script>
 <section id="cart_items">
 	<div class="container">
 		<div class="breadcrumbs">
@@ -31,11 +32,10 @@
 							<p>{{this.product.Price}}</p>
 						</td>
 						<td class="cart_delete">
-							<a class="cart_quantity_delete" href="/addtocart/{{this.item}}"><i
-									class="fa fa-shopping-cart">Add to cart</i></a>
+							<a class="cart_quantity_delete" style="cursor: pointer;" onclick="addToCart('{{this.item}}')"><i class="fa fa-shopping-cart">Add to cart</i></a>
 						</td>
 						<td class="">
-							<a class="cart_quantity_delete" href="/deletewish/{{this.item}}"><i
+							<a class="btn btn-warning href="/deletewish/{{this.item}}"><i
 									class="fa fa-trash-o"></i></a>
 						</td>
 					</tr>
@@ -55,3 +55,4 @@
 	</div>
 </section>
 <!--/#wishlist_items-->
+
