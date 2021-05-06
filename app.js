@@ -10,6 +10,7 @@ const adminRouter = require('./routes/admin')
 const fileUpload = require('express-fileupload')
 const session = require('express-session')
 const db = require('./config/connection')
+const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
 const passport = require('passport');
 const { profile } = require('console');
@@ -24,6 +25,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname,'public')));
 app.use(fileUpload());
 app.use(cookieSession({ name:'Pattern-session',secret:"key",cookie:{maxAge:24 * 60 * 1000}}))
+app.use(cookieParser())
 
 app.use('/',userRouter)
 app.use('/admin',adminRouter)

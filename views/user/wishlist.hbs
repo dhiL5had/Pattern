@@ -32,10 +32,11 @@
 							<p>{{this.product.Price}}</p>
 						</td>
 						<td class="cart_delete">
-							<a class="cart_quantity_delete" style="cursor: pointer;" onclick="addToCart('{{this.item}}')"><i class="fa fa-shopping-cart">Add to cart</i></a>
+							<a class="cart_quantity_delete" style="cursor: pointer;"
+								onclick="addToCart('{{this.item}}')"><i class="fa fa-shopping-cart">Add to cart</i></a>
 						</td>
 						<td class="">
-							<a class="btn btn-warning href="/deletewish/{{this.item}}"><i
+							<a class="btn btn-warning" href="/deletewish/{{this.item}}"><i
 									class="fa fa-trash-o"></i></a>
 						</td>
 					</tr>
@@ -51,8 +52,15 @@
 			</p>
 			<h2><a href="/">Go back to home</a></h2>
 		</div>
+		<script>
+			window.setTimeout(function () {
+
+				window.location.href = "/";
+
+			}, 2000);
+
+		</script>
 		{{/if}}
 	</div>
 </section>
 <!--/#wishlist_items-->
-

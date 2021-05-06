@@ -95,7 +95,6 @@ label {
                     </div>
                 </div>
             </div>
-            <br><br>
             {{!-- {{#if add}}
             <div class="container">
 
@@ -119,7 +118,7 @@ label {
                 </div>
 
             </div>
-            {{/if}} --}}
+            {{!-- {{/if}} --}}
         </form>
     </div>
 </section>
@@ -136,6 +135,7 @@ label {
             },
 
             success: (response) => {
+                console.log("pin",response);
                 if (response.pin != false) {
                     $('#city').val(response.city);
                     $('#state').val(response.state);
@@ -193,11 +193,13 @@ label {
                 method: 'post',
                 data: $('#placeorder').serialize(),
                 success: (response) => {
+                    console.log(response);
                     if (response.paySuccess) {
                         location.href = '/ordersuccess'
                     } else if (response.razorpay) {
                         razorpayPayment(response)
-
+                    }else if(response.paypal){
+                        location.replace(response.paypal)
                     }
                 }
             })

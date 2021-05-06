@@ -1,0 +1,36 @@
+<section>
+	<div class="container ">
+		<div class="row">
+			<div class="col-sm-12">
+
+				<div class="features_items">
+					<!--features_items-->
+					<h2 class="title text-center">ordered Products</h2>
+					{{#each products}}
+					<div class="col-sm-3">
+						<div class="product-image-wrapper">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<img src="/images/products/{{this.product._id}}1.jpg" style="width:100px; height:auto"
+										alt="Products main image" />
+									<h2>{{this.product.Name}}</h2>
+									<p>Rs.{{this.product.Price}}</p>
+
+								</div>
+								<div class="product-overlay">
+									<div class="overlay-content">
+										<h2>{{this.product.Name}}</h2>
+										<p>Qty:{{this.quantity}}</p>
+										<a href="/productdetails/{{this.product._id}}"
+											class="btn btn-default add-to-cart"><i></i>View Details</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

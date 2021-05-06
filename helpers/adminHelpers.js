@@ -27,6 +27,23 @@ module.exports = {
                 reject(error)
             }
         })
-    }
+    },
+
+    getAllOrders:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+            resolve(orders)
+        })
+    },
+
+    changeOrderStatus:(id,status)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(id)},{
+                $set:{status:status}
+            })
+            resolve()
+        })
+    },
+
 
 }

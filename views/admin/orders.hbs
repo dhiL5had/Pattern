@@ -1,0 +1,61 @@
+<section><br>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr align="center">
+                <th>#no</th>
+                <th>Date &#38; Time</th>
+                <th>Address</th>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr align="center">
+                <td class="index">{{@index}}</td>
+                <td style="width: 200px;">{{this.date}}</td>
+                <td style="width: 200px;">
+                    {{this.deliveryDetails.address}},pin:{{this.deliveryDetails.pincode}},<br>mobile:{{this.deliveryDetails.mobile}}
+                </td>
+                <td style=" max-width: 40px; max-height:40px max-block-size: 3px;">
+                    <a class="btn btn-primary" href="/admin/orderedproducts/{{this._id}}">View Products</a>
+                    ID:{{this._id}}
+                    </td>
+                <td>Rs.{{this.totalamount}}</td>
+                <td>
+                <select name="status" id="status" class="form-control">
+                    <option value="{{this.status}}">{{this.status}}</option>
+                    <option value="Shipped">shipped</option>
+                    <option value="success">success</option>
+                </select>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+
+        document.getElementById('status').onchange(
+            $.ajax({
+                url:'/admin/changestatus',
+                method:'post',
+                data:$('#status').val(),
+
+                success:(response)=>{
+                    console.log(response.status);
+                    if(response.status){
+                        $('#status').html(response.status)
+                    }
+                }
+            })
+        )
+    </script>
+</section>

@@ -11,33 +11,41 @@
 			<table class="table table-condensed">
 				<thead>
 					<tr class="cart_menu">
+						<td class="image">Date &#38; Time</td>
 						<td class="image">Address</td>
 						<td class="image">Item</td>
 						<td class="total">Price</td>
+						<td class="image">Status</td>
 						<td class="description">Edit</td>
 					</tr>
 				</thead>
 				<tbody>
 					{{#each orders}}
 					<tr>
-						<td class="car_product">
-							Delivery Address
+						<td class="car_product col-md-2">
 							<address>
-								{{this.deliveryDetails.address}}<br>
-								{{this.deliveryDetails.state}}{{this.deliveryDetails.city}}<br>
+								{{this.date}}
+							</address>
+						</td>
+						<td class="car_product col-md-2">
+							<address>
+								{{this.deliveryDetails.address}},
 								{{this.deliveryDetails.pincode}}<br>
 							</address>
-
 						</td>
-						<td class="cart_description">
+						<td class="cart_description col-md-2">
 							<h4><a href="/orderdetails/{{this._id}}">View Order Details</a></h4>
-							<p>order ID:{{this._id}}</p>
+							<p>ID:{{this._id}}</p>
 						</td>
-						<td class="cart_total">
+						<td class="cart_total col-md-2">
 							<p class="cart_total_price">Rs.{{this.totalamount}}
 							</p>
 						</td>
-						<td class="">
+						<td class="cart_description col-md-2">
+							<p>{{this.status}}
+							</p>
+						</td>
+						<td class="col-md-2">
 							<a class="btn btn-warning" href="/cancelorder/{{this._id}}">cancel order</a>
 						</td>
 					</tr>
@@ -56,4 +64,12 @@
 	</p>
 	<h2><a href="/">Go back to home</a></h2>
 </div>
+<script>
+	window.setTimeout(function () {
+
+		window.location.href = "/";
+
+	}, 2000);
+
+</script>
 {{/if}}

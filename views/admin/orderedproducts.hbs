@@ -1,0 +1,35 @@
+<section><br>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr align="center">
+                <th>#no</th>
+                <th>Item</th>
+                <th>Image</th>
+                <th>Qunatity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr align="center">
+                <td class="index">{{@index}}</td>
+                <td>{{this.product.Name}}</td>
+                <td>
+                    <img style="width: 50px; height:50px;" src="/images/products/{{this.product._id}}1.jpg" alt="">   
+                </td>
+                <td>{{this.quantity}}</td>
+                <td>{{this.Price}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+</section>
