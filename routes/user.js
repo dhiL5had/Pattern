@@ -55,7 +55,7 @@ router.get('/', (req, res) => {
 
 router.post('/getcatproducts', (req, res) => {
     productHelpers.getSameCategory(req.body.category).then((catproducts) => {
-        res.json({ catproducts })
+        res.json(catproducts)
     })
 })
 

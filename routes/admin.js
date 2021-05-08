@@ -1,20 +1,15 @@
 var express = require('express');
-const { response } = require('../app');
-const multer = require('multer')
-const path = require('path')
 const userHelpers = require('../helpers/userHelpers');
-const adminHelpers = require('../helpers/adminHelpers')
+const adminHelpers = require('../helpers/adminHelpers');
+const productHelpers = require('../helpers/productHelpers');
 const { check, validationResult } = require('express-validator');
-const productHelpers = require('../helpers/productHelpers')
 var router = express.Router();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const base64ToImage = require('base64-to-image');
-const cookieParser = require('cookie-parser');
+
 const authenticateToken = (req, res, next) => {
-    console.log("cookiesss",req.cookies);
     const token = req.cookies.JWT
-    console.log("Tokennnnn",token);
     if(token == null) return res.redirect('/admin/adminlog')
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
@@ -96,19 +91,22 @@ router.post('/addproduct',
         check('viewImg3').notEmpty()
     ],
     (req, res) => {
-        req.body.Price = parseInt(req.body.Price)
-        req.body.Quantity = parseInt(req.body.Quantity)
-
         const errors = validationResult(req);
         if (errors.errors.length >= 1) {
-            res.redirect('/admin/addproduct', { err: 'Please try again' })
+            res.send({error:'Please check the form and enter data correctley'})
         } else {
             let data = {
                 Name: req.body.Name,
-                Price: req.body.Price,
                 Category: req.body.Category,
-                Quantity: req.body.Quantity,
+                Quantity: parseInt(req.body.Quantity),
                 Description: req.body.Description,
+            }
+            if(req.body.offerPrice !== ''){
+                data.ActualPrice = parseInt(req.body.Price);
+                data.Offer = parseInt(req.body.offer);
+                data.Price = parseInt(req.body.offerPrice);
+            }else{
+                data.Price = parseInt(req.body.Price);
             }
             productHelpers.addProduct(data, (id) => {
                 var path = './public/images/products/';
@@ -148,16 +146,23 @@ router.post('/editproduct/:id',
         check('Description').notEmpty(),
     ],
     (req, res) => {
+        console.log("bodyyyy",req.body);
         const errors = validationResult(req);
         if (errors.errors.length >= 1) {
-            res.redirect('/admin/addproduct')
+            res.send({Error:'please check the form and enter the data correctly'})
         } else {
             let data = {
                 Name: req.body.Name,
-                Price: req.body.Price,
                 Category: req.body.Category,
-                Quantity: req.body.Quantity,
+                Quantity: parseInt(req.body.Quantity),
                 Description: req.body.Description,
+            }
+            if(req.body.offerPrice !== ''){
+                data.ActualPrice = parseInt(req.body.Price);
+                data.Offer = parseInt(req.body.offer);
+                data.Price = parseInt(req.body.offerPrice);
+            }else{
+                data.Price = parseInt(req.body.Price);
             }
             let id = req.params.id;
             productHelpers.updateProduct(data, id).then(() => {
@@ -189,8 +194,9 @@ router.get('/deleteproduct/:id', (req, res) => {
     })
 })
 
-router.get('/allusers', authenticateToken, (req, res) => {
-    adminHelpers.getAllusers().then((users) => {
+router.get('/allusers', authenticateToken, async(req, res) => {
+    userHelpers.getAllUsers().then((users) => {
+        console.log(users);
         res.render('admin/allusers', { admin: true, users })
     })
 })
@@ -235,7 +241,6 @@ router.get('/allorders', authenticateToken, (req, res) => {
 })
 
 router.post('/changestatus/:id', (req, res) => {
-    console.log(req.body);
     adminHelpers.changeOrderStatus().then(() => {
         res.json({})
     })

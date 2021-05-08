@@ -4,23 +4,25 @@
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                        {{#if msg}}
-                        <span class="form-control" style="color:red">Please fill the form correctly</span>
-                        {{/if}}
                         <form action="/admin/editproduct/{{product._id}}" method="POST" enctype="multipart/form-data" id="add_form">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputFirstName">Name</label>
-                                        <input class="form-control py-4" id="inputFirstName" name="Name" type="text"
+                                        <input class="form-control " id="inputFirstName" name="Name" type="text"
                                             value="{{product.Name}}" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputLastName">Price</label>
-                                        <input class="form-control py-4" id="inputLastName" name="Price" type="number"
+                                        {{#if product.Offer}}
+                                        <input class="form-control" id="Price" name="Price" type="number" min="50" max="50000"
+                                            value="{{product.ActualPrice}}" />
+                                        {{else}}
+                                        <input class="form-control" id="Price" name="Price" type="number" min="50" max="50000"
                                             value="{{product.Price}}" />
+                                        {{/if}}
                                     </div>
                                 </div>
                             </div>
@@ -41,14 +43,35 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputQuantity">Quantity</label>
-                                        <input class="form-control py-4" id="inputQuantity" name="Quantity"
-                                            type="number" value="{{product.Quantity}}" />
+                                        <input class="form-control" id="inputQuantity" name="Quantity"
+                                            type="number" min="1" max="10000" value="{{product.Quantity}}" />
+                                    </div>
+                                </div>
+                                    <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small mb-1 " for="offer">Offer (in %)</label>
+                                        <input class="form-control " type="number" name="offer" id="offer" min="5" max="100" value="{{product.Offer}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-4">
+                                    <div class="form-group">
+                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer" min="5" value="Add offer">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1 " for="offer">Offer price</label>
+                                        {{#if product.Offer}}
+                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice" value="{{product.Price}}" readonly="true" >
+                                        {{else}}
+                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice" readonly="true" >
+                                        {{/if}}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="small mb-1" for="inputEmailAddress">Description</label>
-                                <input class="form-control py-4" id="inputEmailAddress" name="Description" type="text"
+                                <input class="form-control" id="inputEmailAddress" name="Description" type="text"
                                     value="{{product.Description}}" />
                             </div>
                             <div class="form-group">
@@ -320,4 +343,14 @@
         imageview3.src = imgSrc3;
         $('#imgView3').val(imgSrc3)
     });
+</script>
+<script>
+        document.getElementById('addOffer').addEventListener('click',function(){
+            let price = document.getElementById('Price').value;
+            let offer = document.getElementById('offer').value;
+
+            let offerPrice = (price * offer)/100
+
+            document.getElementById('offerPrice').value = offerPrice;
+        })
 </script>

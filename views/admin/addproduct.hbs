@@ -4,23 +4,21 @@
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                        {{#if msg}}
-                        <span class="form-control" style="color:red">Please fill the form correctly</span>
-                        {{/if}}
-                        <form action="/admin/addproduct" method="POST" enctype="multipart/form-data" id="add_form">
+                        <span class="form-control" id="error" style="color:red; display: none;">Please fill the form correctly</span>
+                        <form id="add_form" action="/admin/addproduct" enctype="multipart/form-data" method="POST">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputFirstName">Name</label>
-                                        <input class="form-control py-4" id="inputFirstName" name="Name" type="text"
+                                        <input class="form-control" id="inputFirstName" name="Name" type="text"
                                             required />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputLastName">Price</label>
-                                        <input class="form-control py-4" id="inputLastName" name="Price" type="number"
-                                            required />
+                                        <input class="form-control " id="Price" name="Price" type="number"
+                                            required min="50" max="50000"/>
                                     </div>
                                 </div>
                             </div>
@@ -41,8 +39,25 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputQuantity">Quantity</label>
-                                        <input class="form-control py-4" id="inputQuantity" name="Quantity"
-                                            type="number" required />
+                                        <input class="form-control " id="inputQuantity" name="Quantity"
+                                            type="number" required min="1" max="10000"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="small mb-1 " for="offer">Offer (in %)</label>
+                                        <input class="form-control " type="number" name="offer" id="offer" min="5" max="100" >
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-4">
+                                    <div class="form-group">
+                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer" min="5" value="Add offer">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1 " for="offer">Offer price</label>
+                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice" readonly="true">
                                     </div>
                                 </div>
                             </div>
@@ -56,21 +71,21 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group col-md-6 fsix py-3">
-                                            <input accept="image/*" id="upload1" type="file" name="image1">
+                                            <input accept="image/*" id="upload1" type="file" name="image1" required>
                                         </div>
                                         <textarea name="viewImg1" id="imgView1" style="display: none;"></textarea>
                                         <img src="" id="imageview1" style="height: auto;width: 100px;">
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group col-md-6 fsix py-3">
-                                            <input accept="image/*" id="upload2" type="file" name="image2">
+                                            <input accept="image/*" id="upload2" type="file" name="image2" required>
                                         </div>
                                         <textarea name="viewImg2" id="imgView2" style="display: none;"></textarea>
                                         <img src="" id="imageview2" style="height: auto;width: 100px;">
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group col-md-6 fsix py-3">
-                                            <input accept="image/*" id="upload3" type="file" name="image3">
+                                            <input accept="image/*" id="upload3" type="file" name="image3" required>
                                         </div>
                                         <textarea name="viewImg3" id="imgView3" style="display: none;"></textarea>
                                         <img src="" id="imageview3" style="height: auto;width: 100px;">
@@ -148,8 +163,7 @@
                                 </div>
                             </div>
                             <div class="form-group mt-4 mb-0">
-                                <button type="submit" id="add_product" class="btn btn-primary btn-block">Add
-                                    Product</button>
+                                <input type="submit" id="add_product" class="btn btn-primary btn-block" value="Add product">
                             </div>
                         </form>
                     </div>
@@ -321,57 +335,13 @@
         $('#imgView3').val(imgSrc3)
     });
 </script>
-{{!--
 <script>
-    $('#add_form').validate({
-        rules: {
-            Name: {
-                required: true,
-                maxlength: 16
-            },
-            Price: {
-                required: true,
-                maxlength: 6
-            },
-            Category: {
-                required: true,
-            },
-            Quantity: {
-                required: true,
-            },
-            Description: {
-                required: true,
-                maxlength: 100
-            },
-            'image[]': {
-                required: true,
-                accept: "jpg,png,jpeg"
-            }
-        },
-        messages: {
-            Name: {
-                required: "Product Name Must be Given",
-                maxlength: "Product Name can't be longer than 16 characters"
-            },
-            Price: {
-                required: "price range should be entered",
-                maxlength: "Price cannot exceed more than 6 digits"
-            },
-            Category: {
-                required: "Category should be selected"
-            },
-            Quantity: {
-                required: "Quantity should be added"
-            },
-            Description: {
-                required: "Description for the product must be added",
-                maxlength: "Description can't exceed length more than 100 characters"
-            },
-            image: {
-                required: "Image must be selected",
-                accept: "Only files with format jpg/png/jpeg are allowed"
-            }
-        }
-    });
-    --}}
+        document.getElementById('addOffer').addEventListener('click',function(){
+            let price = document.getElementById('Price').value;
+            let offer = document.getElementById('offer').value;
+
+            let offerPrice = (price * offer)/100
+
+            document.getElementById('offerPrice').value = offerPrice;
+        })
 </script>

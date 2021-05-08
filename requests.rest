@@ -1,2 +1,0 @@
-POST http://localhost:3001/admin/localhost:3001/admin
-Cookie: JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp0cnVlLCJpYXQiOjE2MjAyOTMzOTcsImV4cCI6MTYyMDI5Njk5N30.HqsuF1_D1O5HdoCUABRxaRJkhnamD7cD81IbyyBmfXs; Max-Age=3; Path=/; Expires=Thu, 06 May 2021 09:30:01 GMT; HttpOnly
