@@ -15,6 +15,7 @@ const { resolveSoa } = require('dns');
 const { options } = require('../routes/admin');
 const { ESTALE } = require('constants');
 const { stringify } = require('querystring');
+const { promisify } = require('util');
 
 module.exports = {
 
@@ -105,8 +106,18 @@ module.exports = {
         })
     },
 
+    verifyNumber:(phone)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({Phone:phone})
+            if(user == null){
+                resolve({user:null})
+            }else if(user.State){
+                resolve({user:user._id})
+            }
+        })
+    },
+
     getAllUsers: () => {
-        console.log("im here also");
         return new Promise(async (resolve, reject) => {
             let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
             resolve(users)

@@ -1,5 +1,3 @@
-
-
 <section id="form">
 	<!--form-->
 	<div class="container">
@@ -8,19 +6,20 @@
 				<div class="login-form">
 					<!--login form-->
 					<h2>Login to your account</h2>
+
 					<form id="login_form">
 						<span style="color: red;" id="formError"></span>
 						<input type="email" id="email" name="Email" placeholder="Email" />
 						<span style="color: red;" id="emailError"></span>
 						<input type="password" id="password" name="Password" placeholder="Password" />
 						<div>
-							<a href="/google">login with <img src="/home/google.png" width="18"
-									height="auto" alt=""></a>&nbsp;
-
+							<a href="/google"><img src="/home/google.png" width="150" height="auto" alt=""></a>&nbsp;
+							<a id="otplog" href="/otplogin"><img src="/home/otp.png" alt="" width="130"></a>
 						</div>
 						<p class="">Don't have an Account? &nbsp;<a href="/signup">signup</a></p>
 						<button type="submit" id="log_btn" class="btn btn-default">Login</button>
 					</form>
+
 				</div>
 				<!--/login form-->
 			</div>
@@ -31,65 +30,65 @@
 <!--/form-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	$(document).ready(function(){
+	$(document).ready(function () {
+
 
 		$('#login_form').validate({
 			rules: {
-				Email:{
-					required:true,
-					email:true
+				Email: {
+					required: true,
+					email: true
 				},
 				Password: {
 					required: true,
 					minlength: 6,
-					maxlength:16
+					maxlength: 16
 				}
 			},
-			messages:{
-				Email:{
-					required:"Please enter an email"
+			messages: {
+				Email: {
+					required: "Please enter an email"
 				},
-				Password:{
-					required:"Password field cannot be empty",
-					minlength:"Password you set wont be less than 6 characters long",
-					maxlength:"Password you set wont be long than 16 characters"
+				Password: {
+					required: "Password field cannot be empty",
+					minlength: "Password you set wont be less than 6 characters long",
+					maxlength: "Password you set wont be long than 16 characters"
 
 				}
 			}
 		});
 	})
 
-	$('#log_btn').click(function(e){
+	$('#log_btn').click(function (e) {
 		var isvalid = $('#login_form').valid();
-		if(isvalid){
+		if (isvalid) {
 			e.preventDefault();
 			$.ajax({
-				url:'/login',
-				data:$('#login_form').serialize(),
-				method:'post',
+				url: '/login',
+				data: $('#login_form').serialize(),
+				method: 'post',
 
-				success:((response)=>{
-					if(response.login){
+				success: ((response) => {
+					if (response.login) {
 						window.location.replace('/')
-						{{!-- console.log(response.data); --}}
 					}
-					if(response.State == 'Blocked'){
+					if (response.State == 'Blocked') {
 						$('#formError').html('Your account has been blocked')
 						$('#email,#password').val('')
 						$('#emailError').hide()
-						$(':input[type="submit"]').prop('disabled',false);
+						$(':input[type="submit"]').prop('disabled', false);
 					}
-					if(response.email == 'emailError'){
+					if (response.email == 'emailError') {
 						$('#emailError').html('Email is not registered')
 						$('#email,#password').val('')
 						$('#formError').hide()
-						$(':input[type="submit"]').prop('disabled',false);
-					}if(response.pass == 'Invalid'){
+						$(':input[type="submit"]').prop('disabled', false);
+					} if (response.pass == 'Invalid') {
 						$('#formError').html("Email and password doesn't match")
 						$('#email,#password').val('')
 						$('#emailError').hide()
-						$(':input[type="submit"]').prop('disabled',false);
-					}if(response == 'loginError'){
+						$(':input[type="submit"]').prop('disabled', false);
+					} if (response == 'loginError') {
 						$('#formError').html("Couldn't login, please try again")
 						$('#emailError').hide()
 						$(':input[type="submit"]').prop('disabled', false);

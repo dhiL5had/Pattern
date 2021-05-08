@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <div class="login-form">
+                <h2>Login to your account</h2>
+                <form id="mobile_form" method="POST">
+                    <p style="color: red;" id="phoneError"></p>
+                    <label>Enter your registered mobile number</label>
+                    <input type="tel" name="mobile" id="mobile" pattern="^((\+91[0-9]{10})|(0[0-9]{10}))$"
+                        placeholder="+91 <enter your number>">
+                    <input type="submit" id="mobile_log" class="btn btn-danger" value="send OTP">
+                </form>
+                <form id="otp_form" style="display: none;">
+                    <label for="" >Enter the OTP sent to +91 <span id="otpsentence"></span></label>
+                    <p style="color: red;" id="otpError"></p>
+                    <input type="number" name="otp" id="otp">
+                    <input type="tel" name="mobile" id="vmobile" style="display: none;">
+                    <a href="/otplogin">change number</a>
+                    <input type="submit" id="otp_log" class="btn btn-default" value="submit OTP">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#mobile_form').validate({
+            rules: {
+                mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                }
+            },
+            messages: {
+                mobile: {
+                    required: "Please enter your mobile number",
+                    number: "Only digits are allowed",
+                    minlength: "Phone number must be 10 digits",
+                    maxlength: "Phone number should be of 10 digits"
+                }
+            }
+        })
+
+        $('#mobile_log').click(function (e) {
+            var isvalid = $('#mobile_form').valid();
+            if (isvalid) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/otplogin',
+                    type: 'POST',
+                    data: {
+                        mobile: $('#mobile').val()
+                    },
+
+                    success: ((response) => {
+                        console.log(response);
+                        if (response.ok) {
+                            $('#mobile_form').hide()
+                            $('#otp_form').show()
+                            $('#otpsentence').text(response.mobile)
+                            $('#vmobile').val(response.mobile)
+                        } else if (response.number) {
+                            $('#phoneError').html(response.number)
+                        }
+                    })
+                })
+            }
+        })
+
+        $('#otp_form').validate({
+            rules:{
+                otp:{
+                    required:true,
+                    minlength:6,
+                    maxlength:6
+                }
+            },
+            messages:{
+                otp:{
+                    required:"You must enter otp",
+                    minlength:"Please enter 6 digit code",
+                    maxlength:"Please enter 6 digit code"
+                }
+            }
+        })
+        
+        $('#otp_log').click(function (e) {
+            var isvalid = $('#otp_form').valid();
+            if (isvalid) {
+                e.preventDefault();
+
+                $.ajax({
+                    url:'/verifyotp',
+                    type:'POST',
+                    data:$('#otp_form').serialize(),
+
+                    success:((response)=>{
+                        console.log(response);
+                        if(response.login){
+                            location.replace('/')
+                        }else{
+                            $('#otpError').html(response.otp)
+                        }
+                    })
+
+                })
+                }
+        })
+    })
+</script>
+

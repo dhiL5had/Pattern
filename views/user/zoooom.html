@@ -1,296 +1,69 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-* {box-sizing: border-box;}
-
-.img-magnifier-container {
-  position:relative;
-}
-
-.img-magnifier-glass {
-  position: absolute;
-  border: 3px solid #000;
-  border-radius: 50%;
-  cursor: none;
-  /*Set the size of the magnifier glass:*/
-  width: 200px;
-  height: 200px;
-}
-</style>
-<script>
-function magnify(imgID, zoom) {
-  var img, glass, w, h, bw;
-  img = document.getElementById(imgID);
-  /*create magnifier glass:*/
-  glass = document.createElement("DIV");
-  glass.setAttribute("class", "img-magnifier-glass");
-  /*insert magnifier glass:*/
-  img.parentElement.insertBefore(glass, img);
-  /*set background properties for the magnifier glass:*/
-  glass.style.backgroundImage = "url('" + img.src + "')";
-  glass.style.backgroundRepeat = "no-repeat";
-  glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
-  bw = 3;
-  w = glass.offsetWidth / 2;
-  h = glass.offsetHeight / 2;
-  /*execute a function when someone moves the magnifier glass over the image:*/
-  glass.addEventListener("mousemove", moveMagnifier);
-  img.addEventListener("mousemove", moveMagnifier);
-  /*and also for touch screens:*/
-  glass.addEventListener("touchmove", moveMagnifier);
-  img.addEventListener("touchmove", moveMagnifier);
-  function moveMagnifier(e) {
-    var pos, x, y;
-    /*prevent any other actions that may occur when moving over the image*/
-    e.preventDefault();
-    /*get the cursor's x and y positions:*/
-    pos = getCursorPos(e);
-    x = pos.x;
-    y = pos.y;
-    /*prevent the magnifier glass from being positioned outside the image:*/
-    if (x > img.width - (w / zoom)) {x = img.width - (w / zoom);}
-    if (x < w / zoom) {x = w / zoom;}
-    if (y > img.height - (h / zoom)) {y = img.height - (h / zoom);}
-    if (y < h / zoom) {y = h / zoom;}
-    /*set the position of the magnifier glass:*/
-    glass.style.left = (x - w) + "px";
-    glass.style.top = (y - h) + "px";
-    /*display what the magnifier glass "sees":*/
-    glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
-  }
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /*get the x and y positions of the image:*/
-    a = img.getBoundingClientRect();
-    /*calculate the cursor's x and y coordinates, relative to the image:*/
-    x = e.pageX - a.left;
-    y = e.pageY - a.top;
-    /*consider any page scrolling:*/
-    x = x - window.pageXOffset;
-    y = y - window.pageYOffset;
-    return {x : x, y : y};
-  }
-}
-</script>
-</head>
-<body>
-
-<h1>Image Magnifier Glass</h1>
-
-<p>Mouse over the image:</p>
-
-<div class="img-magnifier-container">
-  <img id="myimage" src="https://media-exp1.licdn.com/dms/image/C5603AQGf7-qo6E7jXg/profile-displayphoto-shrink_800_800/0/1619015009511?e=1625097600&v=beta&t=6S9CNQntDZS2lqcxPZJIE0EX4GkX2V64YaSoo1PNY-E" width="600" height="400">
-</div>
-
-<p>Feel free to change the strength of the magnifier glass when initiating the magnify function.</p>
-
-<script>
-/* Initiate Magnify Function
-with the id of the image, and the strength of the magnifier glass:*/
-magnify("myimage", 3);
-</script>
-
-</body>
-</html> -->
-
 <!DOCTYPE html>
-<html>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: Arial;
-  margin: 0;
-}
+<html lang="en">
 
-* {
-  box-sizing: border-box;
-}
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoom test</title>
 
-img {
-  vertical-align: middle;
+  <!-- <style>
+    #default{
+  text-align:center;
 }
+  </style> -->
+</head>
 
-/* Position the image container (needed to position the left and right arrows) */
-.container {
-  position: relative;
-}
-
-/* Hide the images by default */
-.mySlides {
-  display: none;
-}
-
-/* Add a pointer when hovering over the thumbnail images */
-.cursor {
-  cursor: pointer;
-}
-
-/* Next & previous buttons */
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 40%;
-  width: auto;
-  padding: 16px;
-  margin-top: -50px;
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Position the "next button" to the right */
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
-
-/* Container for image text */
-.caption-container {
-  text-align: center;
-  background-color: #222;
-  padding: 2px 16px;
-  color: white;
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Six columns side by side */
-.column {
-  float: left;
-  width: 16.66%;
-}
-
-/* Add a transparency effect for thumnbail images */
-.demo {
-  opacity: 0.6;
-}
-
-.active,
-.demo:hover {
-  opacity: 1;
-}
-</style>
 <body>
 
-<h2 style="text-align:center">Slideshow Gallery</h2>
+  <div class="container">
+    <!-- default start -->
+    <section id="default" class="padding-top0">
+      <div class="row">
+        <div class="large-12 column">
+          <h3>Product Zooming</h3>
+        </div>
+        <hr>
+        <div class="large-5 column">
+          <div class="xzoom-container">
+            <img class="xzoom" id="xzoom-default"
+              src="/public/images/products/60853b8da3be032434165dd11.jpg"
+              xoriginal="/public/images/products/60853b8da3be032434165dd11.jpg" />
+            <div class="xzoom-thumbs">
+              <a
+                href="/public/images/products/60853b8da3be032434165dd11.jpg"><img
+                  class="xzoom-gallery" width="80"
+                  src="/public/images/products/60853b8da3be032434165dd11.jpg"
+                  xpreview="/public/images/products/60853b8da3be032434165dd11.jpg"></a>
 
-<div class="container">
-  <div class="mySlides">
-    <div class="numbertext">1 / 6</div>
-    <img src="" style="width:100%">
+              <a
+                href="/public/images/products/60853b8da3be032434165dd12.jpg">
+                <img
+                  class="xzoom-gallery" width="80"
+                  src="/public/images/products/60853b8da3be032434165dd12.jpg"
+                  title="The description goes here"></a>
+
+              <a
+                href="/public/images/products/60853b8da3be032434165dd13.jpg">
+                <img
+                  class="xzoom-gallery" width="80"
+                  src="/public/images/products/60853b8da3be032434165dd13.jpg"
+                  title="The description goes here"></a>
+
+            </div>
+          </div>
+        </div>
+        <div class="large-7 column"></div>
+      </div>
+    </section>
+    <!-- default end -->
   </div>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+  <script src="/public/js/zoom.js"></script>
+    <script src="https://unpkg.com/xzoom/dist/xzoom.min.js"></script>
+    <!-- <script src="https://hammerjs.github.io/dist/hammer.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js" integrity="sha512-aPZP5EFQrbKpqux5Th+or0QDCS+ob5uYscmW5Rg3vbheeegHtyj1WY3vsZujqLNXQTjAPTT8hA2QKczu0lMcmg==" crossorigin="anonymous"></script> -->
 
-  <div class="mySlides">
-    <div class="numbertext">2 / 6</div>
-    <img src="" style="width:100%">
-  </div>
-
-  <div class="mySlides">
-    <div class="numbertext">3 / 6</div>
-    <img src="" style="width:100%">
-  </div>
-    
-  <div class="mySlides">
-    <div class="numbertext">4 / 6</div>
-    <img src="" style="width:100%">
-  </div>
-
-  <div class="mySlides">
-    <div class="numbertext">5 / 6</div>
-    <img src="" style="width:100%">
-  </div>
-    
-  <div class="mySlides">
-    <div class="numbertext">6 / 6</div>
-    <img src="" style="width:100%">
-  </div>
-    
-  <a class="prev" onclick="plusSlides(-1)">❮</a>
-  <a class="next" onclick="plusSlides(1)">❯</a>
-
-  <div class="caption-container">
-    <p id="caption"></p>
-  </div>
-
-  <div class="row">
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
-    </div>
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(5)" alt="Nature and sunrise">
-    </div>    
-    <div class="column">
-      <img class="demo cursor" src="" style="width:100%" onclick="currentSlide(6)" alt="Snowy Mountains">
-    </div>
-  </div>
-</div>
-
-<script>
-var slideIndex = 1;
-showSlides(slideIndex);
-
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("demo");
-  var captionText = document.getElementById("caption");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
-  captionText.innerHTML = dots[slideIndex-1].alt;
-}
-</script>
-    
 </body>
+
 </html>

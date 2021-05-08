@@ -1,7 +1,34 @@
-<script src="../js/addTo.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/xzoom/dist/xzoom.css">
 <section>
     <div class="container">
         <div class="row">
+            <div class="col-md-3 pl-5">
+            <div class="xzoom-container">
+            <img class="xzoom" id="xzoom-default"
+              src="/images/products/{{product._id}}1.jpg"
+              xoriginal="/images/products/{{product._id}}1.jpg" />
+            <div class="xzoom-thumbs">
+              <a
+                href="/images/products/{{product._id}}1.jpg"><img
+                  class="xzoom-gallery" width="80"
+                  src="/images/products/{{product._id}}1.jpg"
+                  xpreview="/images/products/{{product._id}}1.jpg"></a>
+
+              <a
+                href="/images/products/{{product._id}}2.jpg">
+                <img
+                  class="xzoom-gallery" width="80"
+                  src="/images/products/{{product._id}}2.jpg"></a>
+
+              <a
+                href="/images/products/{{product._id}}3.jpg">
+                <img
+                  class="xzoom-gallery" width="80"
+                  src="/images/products/{{product._id}}3.jpg"></a>
+
+            </div>
+          </div>
+            </div>
             <div class="col-md-7 pt-5">
                 <div class="product-details">
                     <!--product-details-->
@@ -21,12 +48,7 @@
                                     wishlist
                                 </a>
                             </span>
-                            <p><b>Availability:</b>
-                                {{!-- {{#if product.Quantity > 0}}
-                                <span>Available</span>
-                                {{else}}
-                                <span>Out of stock</span>
-                                {{/if}} --}}
+                            <p><b>Availability:</b>Available
                             </p>
                             <p><b>Description:</b>{{product.Description}}</p>
                         </div>
@@ -72,3 +94,8 @@
         <!--/recommended_items-->
     </div>
 </section>
+<script src="../js/addTo.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/xzoom/dist/xzoom.min.js"></script>
+<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>

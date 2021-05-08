@@ -62,12 +62,38 @@
 	</div>
 </section>
 <!--/slider-->
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			{{#if categories}}
+			<div class="category-tab">
+				<!--category-tab-->
+				<div class="col-sm-12">
+					<ul class="nav nav-tabs">
+						{{#each categories}}
+						<li style="cursor: pointer;"><a onclick="getCatProducts('{{this.newcategory}}')"
+								data-toggle="tab">{{this.newcategory}}</a></li>
+						{{/each}}
+					</ul>
+				</div>
+				<div class="tab-content">
+					{{#each categories}}
+					<div class="tab-pane fade active in" id="{{this.newcategory}}tab">
+						{{/each}}
+
+					</div>
+				</div>
+			</div>
+			<!--/category-tab-->
+			{{/if}}
+		</div>
+	</div>
+</div>
 
 <section>
 	<div class="container ">
 		<div class="row">
 			<div class="col-sm-12">
-
 				<div class="features_items">
 					<!--features_items-->
 					<h2 class="title text-center">All Products</h2>
@@ -102,27 +128,6 @@
 					</div>
 					{{/each}}
 				</div>
-				{{#if categories}}
-				<div class="category-tab">
-					<!--category-tab-->
-					<div class="col-sm-12">
-						<ul class="nav nav-tabs">
-							{{#each categories}}
-							<li style="cursor: pointer;"><a onclick="getCatProducts('{{this.newcategory}}')"
-									data-toggle="tab">{{this.newcategory}}</a></li>
-							{{/each}}
-						</ul>
-					</div>
-					<div class="tab-content">
-						{{#each categories}}
-						<div class="tab-pane fade active in" id="{{this.newcategory}}tab">
-							{{/each}}
-
-						</div>
-					</div>
-				</div>
-				<!--/category-tab-->
-				{{/if}}
 			</div>
 		</div>
 	</div>
@@ -137,9 +142,10 @@
 			},
 
 			success: (products) => {
+				console.log(products);
 				$.each(products, (i) => {
 					$.each(products[i], (key, val) => {
-						$('#'+category+'tab').html(`<div class="col-sm-3"><div class="product-image-wrapper"><div class="single-products">
+						$('#' + category + 'tab').html(`<div class="col-sm-3"><div class="product-image-wrapper"><div class="single-products">
 								<div class="productinfo text-center"><img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto" alt="Products main image" />
 									<h2>{{this.Name}}</h2><p>Rs.{{this.Price}}</p></div>
 								<div class="product-overlay"><div class="overlay-content">

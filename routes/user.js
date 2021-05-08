@@ -11,9 +11,11 @@ const { rejects } = require('assert');
 const passport = require('passport');
 const { getProductDetails } = require('../helpers/productHelpers');
 const { route } = require('./admin');
-const paypal = require('paypal-rest-sdk')
+const paypal = require('paypal-rest-sdk');
+const { stringify } = require('querystring');
 require('../auth');
 require('dotenv').config();
+const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTHTOKEN)
 const verifyLogin = (req, res, next) => {
     let user = req.session.user;
     if (user != null) {
@@ -66,6 +68,51 @@ router.get('/login', (req, res) => {
     }
 })
 
+router.get('/otplogin',(req,res)=>{
+    res.render('user/otp')
+})
+
+router.post('/otplogin',(req,res)=>{
+    let phone = `${req.body.mobile}`
+    userHelpers.verifyNumber(phone).then((user)=>{
+        if(user.user !== null){
+            twilio.verify.services(process.env.TWILIO_SERVICE_SID)
+            .verifications.create({
+                to:`+91${req.body.mobile}`,
+                channel:'sms'
+            }).then((response)=>{
+                console.log(response);
+                res.json({ok:true, mobile:req.body.mobile})
+            })
+        }else{
+            res.json({number:'Enter valid mobile number'})
+        }
+    })
+})
+
+router.post('/verifyotp',(req,res)=>{
+    console.log(req.body);
+    let phone = `${req.body.mobile}`
+    twilio.verify.services(process.env.TWILIO_SERVICE_SID)
+            .verificationChecks.create({
+                to:`+91${phone}`,
+                code:req.body.otp
+            }).then((response)=>{
+                console.log("otpverification",response);
+                if(response.valid){
+                    userHelpers.verifyNumber(phone).then((user)=>{
+                        console.log("user",user);
+                        req.session.user = user._id;
+                        req.session.user.loggedIn = true;
+                        res.json({login:true})
+
+                    })
+                }else{
+                    res.json({otp:"please check the entered OTP"})
+                }
+            })
+})
+
 router.post('/login',
     [
         check('Email').notEmpty().isEmail().normalizeEmail(),
@@ -88,7 +135,6 @@ router.post('/login',
                     res.json({ pass: 'Invalid' })
                 }
                 else if (response.login) {
-                    console.log("i'm hereeeeee");
 
                     req.session.user = response.user._id;
                     req.session.user.loggedIn = true;
