@@ -157,7 +157,7 @@ router.post('/editproduct/:id',
                 Quantity: parseInt(req.body.Quantity),
                 Description: req.body.Description,
             }
-            if(req.body.offerPrice !== ''){
+            if(req.body.offer !== ''  &&  req.body.offerPrice !== '' && req.body.offerPrice !== '0'){
                 data.ActualPrice = parseInt(req.body.Price);
                 data.Offer = parseInt(req.body.offer);
                 data.Price = parseInt(req.body.offerPrice);

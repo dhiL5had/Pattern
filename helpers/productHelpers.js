@@ -20,7 +20,6 @@ module.exports = {
     },
 
     getProductDetails: (proId) => {
-        console.log("prodddddd", proId);
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(proId) }).then((product) => {
                 resolve(product)
@@ -37,22 +36,53 @@ module.exports = {
         })
     },
 
+    getOfferProducts:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((products)=>{
+                resolve(products)
+            })
+        })
+    },
 
     updateProduct: (proData, proId) => {
+        console.log("edit Pro",proData);
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(proId) },
+            if(proData.Offer){
+                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(proId)},
                 {
                     $set: {
                         Name: proData.Name,
-                        Price: proData.Price,
                         Category: proData.Category,
                         Quantity: proData.Quantity,
                         Description: proData.Description,
+                        Price:proData.Price,
+                        Offer:proData.Offer,
+                        ActualPrice:proData.ActualPrice
 
                     }
                 }).then(() => {
                     resolve()
                 })
+            }else{
+                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) },
+                    {
+                        $set: {
+                            Name: proData.Name,
+                            Price: proData.Price,
+                            Category: proData.Category,
+                            Quantity: proData.Quantity,
+                            Description: proData.Description,
+    
+                        },
+
+                        $unset:{
+                            Offer:'',
+                            ActualPrice:''
+                        }
+                    }).then(() => {
+                        resolve()
+                    })
+            }
         })
     }
     ,

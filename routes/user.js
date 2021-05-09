@@ -38,7 +38,9 @@ router.get('/', (req, res) => {
             productHelpers.getCategories().then((categories) => {
                 userHelpers.getCartCount(user).then((cartCount) => {
                     userHelpers.getWishCount(user).then((wishCount) => {
-                        res.render('user/home', { user, products, categories, cartCount, wishCount })
+                        productHelpers.getOfferProducts().then((offproducts)=>{
+                            res.render('user/home', { user, products,offproducts, categories, cartCount, wishCount })
+                        })
                     })
                 })
             })

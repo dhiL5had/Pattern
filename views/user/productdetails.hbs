@@ -3,31 +3,22 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3 pl-5">
-            <div class="xzoom-container">
-            <img class="xzoom" id="xzoom-default"
-              src="/images/products/{{product._id}}1.jpg"
-              xoriginal="/images/products/{{product._id}}1.jpg" />
-            <div class="xzoom-thumbs">
-              <a
-                href="/images/products/{{product._id}}1.jpg"><img
-                  class="xzoom-gallery" width="80"
-                  src="/images/products/{{product._id}}1.jpg"
-                  xpreview="/images/products/{{product._id}}1.jpg"></a>
+                <div class="xzoom-container">
+                    <img class="xzoom" id="xzoom-default" src="/images/products/{{product._id}}1.jpg"
+                        xoriginal="/images/products/{{product._id}}1.jpg" />
+                    <div class="xzoom-thumbs">
+                        <a href="/images/products/{{product._id}}1.jpg"><img class="xzoom-gallery" width="80"
+                                src="/images/products/{{product._id}}1.jpg"
+                                xpreview="/images/products/{{product._id}}1.jpg"></a>
 
-              <a
-                href="/images/products/{{product._id}}2.jpg">
-                <img
-                  class="xzoom-gallery" width="80"
-                  src="/images/products/{{product._id}}2.jpg"></a>
+                        <a href="/images/products/{{product._id}}2.jpg">
+                            <img class="xzoom-gallery" width="80" src="/images/products/{{product._id}}2.jpg"></a>
 
-              <a
-                href="/images/products/{{product._id}}3.jpg">
-                <img
-                  class="xzoom-gallery" width="80"
-                  src="/images/products/{{product._id}}3.jpg"></a>
+                        <a href="/images/products/{{product._id}}3.jpg">
+                            <img class="xzoom-gallery" width="80" src="/images/products/{{product._id}}3.jpg"></a>
 
-            </div>
-          </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-7 pt-5">
                 <div class="product-details">
@@ -38,6 +29,7 @@
                             <h2>{{product.Name}}</h2>
                             <span>
                                 <span>Rs.{{product.Price}}</span>
+
                                 <a type="button" onclick="addToCart('{{product._id}}')" class="btn btn-warning cart">
                                     <i class="fa fa-shopping-cart"></i>
                                     cart
@@ -47,6 +39,12 @@
                                     <i class="fa fa-heart"></i>
                                     wishlist
                                 </a>
+                            </span><br>
+                            <span>
+                                {{#if product.Offer}}
+                                <span style="color: green;">{{product.Offer}}% OFF</span>
+                                <s style="font-size: 25px;">Rs.{{product.ActualPrice}}</s>
+                                {{/if}}
                             </span>
                             <p><b>Availability:</b>Available
                             </p>
@@ -61,41 +59,46 @@
         <div class="recommended_items mt-5">
             <!--recommended_items-->
             <h2 class="title text-center">Related items</h2>
-                {{#each catproducts}}
-                <div class="col-sm-3">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="/images/products/{{this._id}}1.jpg" style="width: 90px; height:auto"
-                                    alt="Products main image" />
+            {{#each catproducts}}
+            <div class="col-sm-3">
+                <div class="product-image-wrapper">
+                    <div class="single-products" >
+                        <div class="productinfo text-center"  style="height: 25px; width: 25px;">
+                            <img src="/images/products/{{this._id}}1.jpg" style="width: 90px; height:auto"
+                                alt="Products main image" />
+                            <h2>{{this.Name}}</h2>
+                            <p>Rs.{{this.Price}}</p>
+                            {{#if this.Offer}}
+                            <p>{{this.Offer}}% off
+                                <s>Rs.{{this.ActualPrice}}</s>
+                            </p>
+                            {{/if}}
+                        </div>
+                        <div class="product-overlay">
+                            <div class="overlay-content">
                                 <h2>{{this.Name}}</h2>
                                 <p>Rs.{{this.Price}}</p>
-
+                                <a href="/productdetails/{{this._id}}" class="btn btn-default add-to-cart"><i></i>View
+                                    Details</a>
                             </div>
-                            <div class="product-overlay">
-                                <div class="overlay-content">
-                                    <h2>{{this.Name}}</h2>
-                                    <p>Rs.{{this.Price}}</p>
-                                    <a href="/productdetails/{{this._id}}"
-                                        class="btn btn-default add-to-cart"><i></i>View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="choose">
-                            <ul class="nav nav-pills nav-justified">
-                                <li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
-                                <li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
                         </div>
                     </div>
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+                            <li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
-                {{/each}}
+            </div>
+            {{/each}}
         </div>
         <!--/recommended_items-->
     </div>
 </section>
 <script src="../js/addTo.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
 <script src="https://unpkg.com/xzoom/dist/xzoom.min.js"></script>
 <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/foundation.min.js"></script>

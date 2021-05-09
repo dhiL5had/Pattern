@@ -23,7 +23,7 @@
 								<img src="images/home/pricing.png" class="pricing" alt="" />
 							</div>
 						</div>
-						<div class="item">
+						<div class="item ">
 							<div class="col-sm-6">
 								<h1><span>P</span>attern</h1>
 								<h2>Shop in a different Pattern</h2>
@@ -109,15 +109,20 @@
 					<!--features_items-->
 					<h2 class="title text-center">All Products</h2>
 					{{#each products}}
-					<div class="col-sm-3">
+					<div class="col-sm-3 ">
 						<div class="product-image-wrapper">
 							<div class="single-products">
 								<div class="productinfo text-center">
 									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
 										alt="Products main image" />
 									<h2>{{this.Name}}</h2>
-									<p>Rs.{{this.Price}}</p>
-
+									<p>Rs.{{this.Price}}
+									</p>
+										{{#if this.Offer}}
+										<p>{{this.Offer}}% off
+											<s>Rs.{{this.ActualPrice}}</s>
+										</p>
+										{{/if}}	
 								</div>
 								<div class="product-overlay">
 									<div class="overlay-content">

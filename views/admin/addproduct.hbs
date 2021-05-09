@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="col-md-2 pt-4">
                                     <div class="form-group">
-                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer" min="5" value="Add offer">
+                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer" value="Add offer">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -340,8 +340,9 @@
             let price = document.getElementById('Price').value;
             let offer = document.getElementById('offer').value;
 
-            let offerPrice = (price * offer)/100
+            let offerPrice = price - (price * offer)/100
 
             document.getElementById('offerPrice').value = offerPrice;
         })
+
 </script>

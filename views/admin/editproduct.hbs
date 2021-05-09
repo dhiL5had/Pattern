@@ -4,7 +4,8 @@
             <div class="col-lg-7">
                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                     <div class="card-body">
-                        <form action="/admin/editproduct/{{product._id}}" method="POST" enctype="multipart/form-data" id="add_form">
+                        <form action="/admin/editproduct/{{product._id}}" method="POST" enctype="multipart/form-data"
+                            id="add_form">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -17,11 +18,11 @@
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputLastName">Price</label>
                                         {{#if product.Offer}}
-                                        <input class="form-control" id="Price" name="Price" type="number" min="50" max="50000"
-                                            value="{{product.ActualPrice}}" />
+                                        <input class="form-control" id="Price" name="Price" type="number" min="50"
+                                            max="50000" value="{{product.ActualPrice}}" />
                                         {{else}}
-                                        <input class="form-control" id="Price" name="Price" type="number" min="50" max="50000"
-                                            value="{{product.Price}}" />
+                                        <input class="form-control" id="Price" name="Price" type="number" min="50"
+                                            max="50000" value="{{product.Price}}" />
                                         {{/if}}
                                     </div>
                                 </div>
@@ -43,29 +44,39 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="small mb-1" for="inputQuantity">Quantity</label>
-                                        <input class="form-control" id="inputQuantity" name="Quantity"
-                                            type="number" min="1" max="10000" value="{{product.Quantity}}" />
+                                        <input class="form-control" id="inputQuantity" name="Quantity" type="number"
+                                            min="1" max="10000" value="{{product.Quantity}}" />
                                     </div>
                                 </div>
-                                    <div class="col-md-4">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="small mb-1 " for="offer">Offer (in %)</label>
-                                        <input class="form-control " type="number" name="offer" id="offer" min="5" max="100" value="{{product.Offer}}">
+                                        <input class="form-control " type="number" name="offer" id="offer" min="5"
+                                            max="100" value="{{product.Offer}}">
                                     </div>
                                 </div>
                                 <div class="col-md-2 pt-4">
                                     <div class="form-group">
-                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer" min="5" value="Add offer">
+                                        <input class="btn btn-primary" type="button" name="addOffer" id="addOffer"
+                                            min="5" value="Add offer">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="small mb-1 " for="offer">Offer price</label>
                                         {{#if product.Offer}}
-                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice" value="{{product.Price}}" readonly="true" >
+                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice"
+                                            value="{{product.Price}}" readonly="true">
                                         {{else}}
-                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice" readonly="true" >
+                                        <input class="form-control " type="number" name="offerPrice" id="offerPrice"
+                                            readonly="true">
                                         {{/if}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-4">
+                                    <div class="form-group">
+                                        <input class="btn btn-danger" type="button" name="clearOffer" id="clearOffer"
+                                            min="5" value="clear Offer">
                                     </div>
                                 </div>
                             </div>
@@ -82,21 +93,24 @@
                                             <input accept="image/*" id="upload1" type="file" name="image1">
                                         </div>
                                         <textarea name="viewImg1" id="imgView1" style="display: none;"></textarea>
-                                        <img src="/images/products/{{product._id}}1.jpg" id="imageview1" style="height: auto;width: 100px;">
+                                        <img src="/images/products/{{product._id}}1.jpg" id="imageview1"
+                                            style="height: auto;width: 100px;">
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group col-md-6 fsix py-3">
                                             <input accept="image/*" id="upload2" type="file" name="image2">
                                         </div>
                                         <textarea name="viewImg2" id="imgView2" style="display: none;"></textarea>
-                                        <img src="/images/products/{{product._id}}2.jpg" id="imageview2" style="height: auto;width: 100px;">
+                                        <img src="/images/products/{{product._id}}2.jpg" id="imageview2"
+                                            style="height: auto;width: 100px;">
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group col-md-6 fsix py-3">
                                             <input accept="image/*" id="upload3" type="file" name="image3">
                                         </div>
                                         <textarea name="viewImg3" id="imgView3" style="display: none;"></textarea>
-                                        <img src="/images/products/{{product._id}}3.jpg" id="imageview3" style="height: auto;width: 100px;">
+                                        <img src="/images/products/{{product._id}}3.jpg" id="imageview3"
+                                            style="height: auto;width: 100px;">
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +185,7 @@
                                 </div>
                             </div>
                             <div class="form-group mt-4 mb-0">
-                                <button type="submit" id="add_product" class="btn btn-primary btn-block">Add
+                                <button type="submit" id="add_product" class="btn btn-primary btn-block">Update
                                     Product</button>
                             </div>
                         </form>
@@ -345,12 +359,17 @@
     });
 </script>
 <script>
-        document.getElementById('addOffer').addEventListener('click',function(){
-            let price = document.getElementById('Price').value;
-            let offer = document.getElementById('offer').value;
+    document.getElementById('addOffer').addEventListener('click', function () {
+        let price = document.getElementById('Price').value;
+        let offer = document.getElementById('offer').value;
 
-            let offerPrice = (price * offer)/100
+        let offerPrice = price - (price * offer) / 100
 
-            document.getElementById('offerPrice').value = offerPrice;
-        })
+        document.getElementById('offerPrice').value = offerPrice;
+    })
+
+    document.getElementById('clearOffer').addEventListener('click', function () {
+        document.getElementById('offer').value = '';
+        document.getElementById('offerPrice').value = '';
+    })
 </script>
