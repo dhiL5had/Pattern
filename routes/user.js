@@ -29,17 +29,23 @@ paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': process.env.PAYPAL_CLIENT_ID,
     'client_secret': process.env.PAYPAL_CLIENT_SECRET
-  });
+});
 
 router.get('/', (req, res) => {
     let user = req.session.user;
     if (user) {
         productHelpers.getAllProducts().then((products) => {
-            productHelpers.getCategories().then((categories) => {
-                userHelpers.getCartCount(user).then((cartCount) => {
-                    userHelpers.getWishCount(user).then((wishCount) => {
-                        productHelpers.getOfferProducts().then((offproducts)=>{
-                            res.render('user/home', { user, products,offproducts, categories, cartCount, wishCount })
+            productHelpers.getSameCategory('Mens').then((mens) => {
+                productHelpers.getSameCategory('Ladies').then((ladies) => {
+                    productHelpers.getSameCategory('Girls').then((girls) => {
+                        productHelpers.getSameCategory('boys').then((boys) => {
+                            productHelpers.getOfferProducts().then((offproducts) => {
+                                userHelpers.getCartCount(user).then((cartCount) => {
+                                    userHelpers.getWishCount(user).then((wishCount) => {
+                                        res.render('user/home', { user, products, offproducts, mens, ladies, girls, boys, cartCount, wishCount })
+                                    })
+                                })
+                            })
                         })
                     })
                 })
@@ -47,8 +53,16 @@ router.get('/', (req, res) => {
         })
     } else {
         productHelpers.getAllProducts().then((products) => {
-            productHelpers.getCategories().then((categories) => {
-                res.render('user/home', { user, products, categories })
+            productHelpers.getSameCategory('Mens').then((mens) => {
+                productHelpers.getSameCategory('Ladies').then((ladies) => {
+                    productHelpers.getSameCategory('Girls').then((girls) => {
+                        productHelpers.getSameCategory('boys').then((boys) => {
+                            productHelpers.getOfferProducts().then((offproducts) => {
+                                res.render('user/home', { user, products, offproducts, mens, ladies, boys, girls })
+                            })
+                        })
+                    })
+                })
             })
         })
     }
@@ -70,49 +84,48 @@ router.get('/login', (req, res) => {
     }
 })
 
-router.get('/otplogin',(req,res)=>{
+router.get('/otplogin', (req, res) => {
     res.render('user/otp')
 })
 
-router.post('/otplogin',(req,res)=>{
+router.post('/otplogin', (req, res) => {
     let phone = `${req.body.mobile}`
-    userHelpers.verifyNumber(phone).then((user)=>{
-        if(user.user !== null){
+    userHelpers.verifyNumber(phone).then((user) => {
+        if (user.user !== null) {
             twilio.verify.services(process.env.TWILIO_SERVICE_SID)
-            .verifications.create({
-                to:`+91${req.body.mobile}`,
-                channel:'sms'
-            }).then((response)=>{
-                console.log(response);
-                res.json({ok:true, mobile:req.body.mobile})
-            })
-        }else{
-            res.json({number:'Enter valid mobile number'})
+                .verifications.create({
+                    to: `+91${req.body.mobile}`,
+                    channel: 'sms'
+                }).then((response) => {
+                    res.json({ ok: true, mobile: req.body.mobile })
+                })
+        } else {
+            res.json({ number: 'Enter valid mobile number' })
         }
     })
 })
 
-router.post('/verifyotp',(req,res)=>{
+router.post('/verifyotp', (req, res) => {
     console.log(req.body);
     let phone = `${req.body.mobile}`
     twilio.verify.services(process.env.TWILIO_SERVICE_SID)
-            .verificationChecks.create({
-                to:`+91${phone}`,
-                code:req.body.otp
-            }).then((response)=>{
-                console.log("otpverification",response);
-                if(response.valid){
-                    userHelpers.verifyNumber(phone).then((user)=>{
-                        console.log("user",user);
-                        req.session.user = user._id;
-                        req.session.user.loggedIn = true;
-                        res.json({login:true})
+        .verificationChecks.create({
+            to: `+91${phone}`,
+            code: req.body.otp
+        }).then((response) => {
+            console.log("otpverification", response);
+            if (response.valid) {
+                userHelpers.verifyNumber(phone).then((user) => {
+                    console.log("user", user.user);
+                    req.session.user = user.user;
+                    req.session.user.loggedIn = true;
+                    res.json({ login: true })
 
-                    })
-                }else{
-                    res.json({otp:"please check the entered OTP"})
-                }
-            })
+                })
+            } else {
+                res.json({ otp: "please check the entered OTP" })
+            }
+        })
 })
 
 router.post('/login',
@@ -311,19 +324,18 @@ router.post('/pincheck', async (req, res) => {
 
 router.get('/placeorder', verifyLogin, (req, res) => {
     let user = req.session.user;
-        userHelpers.getTotalAmount(user).then((total) => {
-            userHelpers.getCartCount(user).then((cartCount) => {
-                userHelpers.getWishCount(user).then((wishCount) => {
-                    res.render('user/placeorder', { user, total, cartCount, wishCount })
-                })
+    userHelpers.getTotalAmount(user).then((total) => {
+        userHelpers.getCartCount(user).then((cartCount) => {
+            userHelpers.getWishCount(user).then((wishCount) => {
+                res.render('user/placeorder', { user, total, cartCount, wishCount })
             })
+        })
     }).catch(() => {
         res.redirect('/')
     })
 })
 
 router.post('/placeorder', async (req, res) => {
-    console.log("Im here", req.body);
     let user = req.session.user;
     req.body.userid = user;
     let address = {
@@ -344,7 +356,7 @@ router.post('/placeorder', async (req, res) => {
             userHelpers.generateRazorpay(orderId, totalPrice).then((response) => {
                 res.json({ response, razorpay: true })
             })
-        }else if(req.body.paymentmethod == 'Paypal'){
+        } else if (req.body.paymentmethod == 'Paypal') {
             const create_payment_json = {
                 "intent": "sandbox",
                 "payer": {
@@ -366,10 +378,10 @@ router.post('/placeorder', async (req, res) => {
                 if (error) {
                     throw error;
                 } else {
-                    for(let i=0; i< payment.links.length; i++){
-                        if(payment.links[i].rel === 'approval_url'){
+                    for (let i = 0; i < payment.links.length; i++) {
+                        if (payment.links[i].rel === 'approval_url') {
                             let paypal = payment.links[i].href;
-                            res.json({paypal})
+                            res.json({ paypal })
                         }
                     }
                 }
@@ -378,7 +390,7 @@ router.post('/placeorder', async (req, res) => {
     })
 })
 
-router.get('/paypalsuccess',(req,res)=>{
+router.get('/paypalsuccess', (req, res) => {
     userHelpers.changePaymentStatus(req.body.order.response.receipt).then(() => {
         res.json({ status: true })
     })
@@ -420,7 +432,11 @@ router.get('/orderdetails/:id', async (req, res) => {
     let user = req.session.user;
     let order = req.params.id;
     let products = await userHelpers.getOrderProducts(order)
-    res.render('user/orderdetails', { user, products })
+    userHelpers.getCartCount(user).then((cartCount) => {
+        userHelpers.getWishCount(user).then((wishCount) => {
+            res.render('user/orderdetails', { user, products,cartCount,wishCount })
+        })
+    })
 })
 
 router.get('/cancelorder/:id', (req, res) => {

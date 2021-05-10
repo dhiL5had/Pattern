@@ -6,49 +6,49 @@
 			<div class="col-sm-12">
 				<div id="slider-carousel" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
-						<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-						<li data-target="#slider-carousel" data-slide-to="1"></li>
-						<li data-target="#slider-carousel" data-slide-to="2"></li>
+						{{#each offproducts}}
+						{{#if @first}}
+						<li data-target="#slider-carousel" data-slide-to="{{@index}}" class="active"></li>
+						{{else}}
+						<li data-target="#slider-carousel" data-slide-to="{{@index}}"></li>
+						{{/if}}
+						{{/each}}
 					</ol>
 
 					<div class="carousel-inner">
+						{{#each offproducts}}
+						{{#if @first}}
 						<div class="item active">
 							<div class="col-sm-6">
-								<h1><span>P</span>attern</h1>
-								<h2>Shop in a different Pattern</h2>
-								<button type="button" class="btn btn-default get">Get it now</button>
+								<h1><span>P</span>attern special offer</h1>
+								<h2>{{this.Name}}</h2>
+								<p>
+									<b style="color: green; font-size: 25px">{{this.Offer}}% off</b>
+								</p>
+								<a type="button" href="/productdetails/{{this._id}}" class="btn btn-default get">Get it now</a>
+
 							</div>
 							<div class="col-sm-6">
-								<img src="images/home/girl1.jpg" class="girl img-responsive" alt="" />
-								<img src="images/home/pricing.png" class="pricing" alt="" />
+								<img src="/images/products/{{this._id}}1.jpg" class="girl img-responsive" alt="" />
 							</div>
 						</div>
+						{{else}}
 						<div class="item ">
 							<div class="col-sm-6">
-								<h1><span>P</span>attern</h1>
-								<h2>Shop in a different Pattern</h2>
-								<button type="button" class="btn btn-default get">Get it now</button>
+								<h1><span>P</span>attern special offer</h1>
+								<h2>{{this.Name}}</h2>
+								<p>
+									<b style="color: green; font-size: 25px">{{this.Offer}}% off</b>
+								</p>
+								<a type="button" class="btn btn-default get" href="/productdetails/{{this._id}}">Get it now</a>
 							</div>
 							<div class="col-sm-6">
-								<img src="images/home/girl2.jpg" class="girl img-responsive" alt="" />
-								<img src="images/home/pricing.png" class="pricing" alt="" />
+								<img src="/images/products/{{this._id}}1.jpg" class="girl img-responsive" alt="" />
 							</div>
 						</div>
-
-						<div class="item">
-							<div class="col-sm-6">
-								<h1><span>P</span>attern</h1>
-								<h2>Shop in a different Pattern</h2>
-								<button type="button" class="btn btn-default get">Get it now</button>
-							</div>
-							<div class="col-sm-6">
-								<img src="images/home/girl3.jpg" class="girl img-responsive" alt="" />
-								<img src="images/home/pricing.png" class="pricing" alt="" />
-							</div>
-						</div>
-
+						{{/if}}
+						{{/each}}
 					</div>
-
 					<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 						<i class="fa fa-angle-left"></i>
 					</a>
@@ -65,52 +65,23 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			{{#if categories}}
 			<div class="category-tab">
 				<!--category-tab-->
 				<div class="col-sm-12">
 					<ul class="nav nav-tabs">
-						{{#each categories}}
-						<li style="cursor: pointer;"><a href="#{{this.newcategory}}" 
-								data-toggle="tab">{{this.newcategory}}</a></li>
-						{{/each}}
+						<li class="active" style="cursor: pointer;"><a href="#allproducts" data-toggle="tab">All products</a></li>
+						<li style="cursor: pointer;"><a href="#mens" data-toggle="tab">Mens</a></li>
+						<li style="cursor: pointer;"><a href="#ladies" data-toggle="tab">Ladies</a></li>
+						<li style="cursor: pointer;"><a href="#boys" data-toggle="tab">Boys</a></li>
+						<li style="cursor: pointer;"><a href="#girls" data-toggle="tab">Girls</a></li>
+						
 					</ul>
 				</div>
 				<div class="tab-content">
-					{{#each categories}}
-					<div class="tab-pane fade active in" id="{{this.newcategory}}tab">
-						{{/each}}
-						{{!-- <div class="col-sm-3">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-								<div class="productinfo text-center">
-									<img src="/images/products/${catproducts[i]._id}1.jpg" style="width:100px; height:auto" alt="Products main image" />
-									<h2>${catproducts[i].Name}</h2><p>Rs.${catproducts[i].Price}</p></div>
-								<div class="product-overlay">
-									<div class="overlay-content">
-								<h2>${catproducts[i].Name}</h2><p>Rs.${catproducts[i].Price}</p>
-								<a href="/productdetails/${catproducts[i]._id}" class="btn btn-default add-to-cart"><i></i>View Details</a></div></div></div>
-							<div class="choose"><ul class="nav nav-pills nav-justified"><li><a onclick="addToWishlist('${catproducts[i]._id}')"><i class="fa fa-heart"></i></a></li>
-							<li><a onclick="addToCart('${catproducts[i]._id}')"><i class="fa fa-shopping-cart"></i></a></li></ul></div></div></div> --}}
-					</div>
-				</div>
-			</div>
-			<!--/category-tab-->
-			{{/if}}
-		</div>
-	</div>
-</div>
-
-<section>
-	<div class="container ">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="features_items">
-					<!--features_items-->
-					<h2 class="title text-center">All Products</h2>
+					<div class="tab-pane fade active in" id="allproducts">
 					{{#each products}}
 					<div class="col-sm-3 ">
-						<div class="product-image-wrapper">
+						<div class="product-image-wrapper" style="height: 250px; width: 250px;">
 							<div class="single-products">
 								<div class="productinfo text-center">
 									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
@@ -118,11 +89,11 @@
 									<h2>{{this.Name}}</h2>
 									<p>Rs.{{this.Price}}
 									</p>
-										{{#if this.Offer}}
-										<p>{{this.Offer}}% off
-											<s>Rs.{{this.ActualPrice}}</s>
-										</p>
-										{{/if}}	
+									{{#if this.Offer}}
+									<p>{{this.Offer}}% off
+										<s>Rs.{{this.ActualPrice}}</s>
+									</p>
+									{{/if}}
 								</div>
 								<div class="product-overlay">
 									<div class="overlay-content">
@@ -133,8 +104,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="choose">
-								<ul class="nav nav-pills nav-justified">
+							<div class="choose justify-content-center">
+								<ul class="nav nav-pills nav-justified" style="background-color: white;">
 									<li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
 									<li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a>
 									</li>
@@ -143,41 +114,158 @@
 						</div>
 					</div>
 					{{/each}}
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-{{!-- <script>
-	function getCatProducts(category) {
-		$.ajax({
-			url: '/getcatproducts',
-			method: 'post',
-			data: {
-				category: category
-			},
-
-			success: (catproducts) => {
-				location.reload()
-				console.log(catproducts);
-					for (let i = 0; i < catproducts.length; i++) {
-							console.log(catproducts[i]);
-							$('#' + category + 'tab')
-							.html(`<div class="col-sm-3">
-							<div class="product-image-wrapper">
-								<div class="single-products">
+					</div>
+					<div class="tab-pane fade in" id="mens">
+					{{#each mens}}
+					<div class="col-sm-3 ">
+						<div class="product-image-wrapper" style="height: 250px; width: 250px;">
+							<div class="single-products">
 								<div class="productinfo text-center">
-									<img src="/images/products/${catproducts[i]._id}1.jpg" style="width:100px; height:auto" alt="Products main image" />
-									<h2>${catproducts[i].Name}</h2><p>Rs.${catproducts[i].Price}</p></div>
+									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
+										alt="Products main image" />
+									<h2>{{this.Name}}</h2>
+									<p>Rs.{{this.Price}}
+									</p>
+									{{#if this.Offer}}
+									<p>{{this.Offer}}% off
+										<s>Rs.{{this.ActualPrice}}</s>
+									</p>
+									{{/if}}
+								</div>
 								<div class="product-overlay">
 									<div class="overlay-content">
-								<h2>${catproducts[i].Name}</h2><p>Rs.${catproducts[i].Price}</p>
-								<a href="/productdetails/${catproducts[i]._id}" class="btn btn-default add-to-cart"><i></i>View Details</a></div></div></div>
-							<div class="choose"><ul class="nav nav-pills nav-justified"><li><a onclick="addToWishlist('${catproducts[i]._id}')"><i class="fa fa-heart"></i></a></li>
-							<li><a onclick="addToCart('${catproducts[i]._id}')"><i class="fa fa-shopping-cart"></i></a></li></ul></div></div></div>`)
-
-						}
-			}
-		})
-	}
-</script> --}}
+										<h2>{{this.Name}}</h2>
+										<p>Rs.{{this.Price}}</p>
+										<a href="/productdetails/{{this._id}}"
+											class="btn btn-default add-to-cart"><i></i>View Details</a>
+									</div>
+								</div>
+							</div>
+							<div class="choose justify-content-center">
+								<ul class="nav nav-pills nav-justified" style="background-color: white;">
+									<li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+									<li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					</div>
+					<div class="tab-pane fade in" id="ladies">
+					{{#each ladies}}
+					<div class="col-sm-3 ">
+						<div class="product-image-wrapper" style="height: 250px; width: 250px;">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
+										alt="Products main image" />
+									<h2>{{this.Name}}</h2>
+									<p>Rs.{{this.Price}}
+									</p>
+									{{#if this.Offer}}
+									<p>{{this.Offer}}% off
+										<s>Rs.{{this.ActualPrice}}</s>
+									</p>
+									{{/if}}
+								</div>
+								<div class="product-overlay">
+									<div class="overlay-content">
+										<h2>{{this.Name}}</h2>
+										<p>Rs.{{this.Price}}</p>
+										<a href="/productdetails/{{this._id}}"
+											class="btn btn-default add-to-cart"><i></i>View Details</a>
+									</div>
+								</div>
+							</div>
+							<div class="choose justify-content-center">
+								<ul class="nav nav-pills nav-justified" style="background-color: white;">
+									<li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+									<li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					</div>
+					<div class="tab-pane fade in" id="boys">
+					{{#each boys}}
+					<div class="col-sm-3 ">
+						<div class="product-image-wrapper" style="height: 250px; width: 250px;">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
+										alt="Products main image" />
+									<h2>{{this.Name}}</h2>
+									<p>Rs.{{this.Price}}
+									</p>
+									{{#if this.Offer}}
+									<p>{{this.Offer}}% off
+										<s>Rs.{{this.ActualPrice}}</s>
+									</p>
+									{{/if}}
+								</div>
+								<div class="product-overlay">
+									<div class="overlay-content">
+										<h2>{{this.Name}}</h2>
+										<p>Rs.{{this.Price}}</p>
+										<a href="/productdetails/{{this._id}}"
+											class="btn btn-default add-to-cart"><i></i>View Details</a>
+									</div>
+								</div>
+							</div>
+							<div class="choose justify-content-center">
+								<ul class="nav nav-pills nav-justified" style="background-color: white;">
+									<li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+									<li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					</div>
+					<div class="tab-pane fade in" id="girls">
+					{{#each girls}}
+					<div class="col-sm-3 ">
+						<div class="product-image-wrapper" style="height: 250px; width: 250px;">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<img src="/images/products/{{this._id}}1.jpg" style="width:100px; height:auto"
+										alt="Products main image" />
+									<h2>{{this.Name}}</h2>
+									<p>Rs.{{this.Price}}
+									</p>
+									{{#if this.Offer}}
+									<p>{{this.Offer}}% off
+										<s>Rs.{{this.ActualPrice}}</s>
+									</p>
+									{{/if}}
+								</div>
+								<div class="product-overlay">
+									<div class="overlay-content">
+										<h2>{{this.Name}}</h2>
+										<p>Rs.{{this.Price}}</p>
+										<a href="/productdetails/{{this._id}}"
+											class="btn btn-default add-to-cart"><i></i>View Details</a>
+									</div>
+								</div>
+							</div>
+							<div class="choose justify-content-center">
+								<ul class="nav nav-pills nav-justified" style="background-color: white;">
+									<li><a onclick="addToWishlist('{{this._id}}')"><i class="fa fa-heart"></i></a></li>
+									<li><a onclick="addToCart('{{this._id}}')"><i class="fa fa-shopping-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					</div>
+				</div>
+			</div>
+			<!--/category-tab-->
+		</div>
+	</div>
+</div>

@@ -38,8 +38,9 @@ module.exports = {
 
     getOfferProducts:()=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((products)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).find({Offer:{$exists:true}}).toArray().then((products)=>{
                 resolve(products)
+                console.log("productsssss",products);
             })
         })
     },
