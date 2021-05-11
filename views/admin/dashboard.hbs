@@ -11,7 +11,7 @@
                     <div class="card bg-primary text-white mb-4">
                         <div class="card-body">{{orCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="#">View orders</a>
+                            <a class="small text-white stretched-link" href="/admin/allorders">View orders</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                     <div class="card bg-warning text-white mb-4">
                         <div class="card-body">{{proCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="#">View products</a>
+                            <a class="small text-white stretched-link" href="/admin/products">View products</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -29,12 +29,12 @@
                     <div class="card bg-success text-white mb-4">
                         <div class="card-body">{{userCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="#">View users</a>
+                            <a class="small text-white stretched-link" href="/admin/allusers ">View users</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                {{!-- <div class="col-xl-3 col-md-6">
                     <div class="card bg-danger text-white mb-4">
                         <div class="card-body">Danger Card</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -42,7 +42,7 @@
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             </div>
     </main>
@@ -54,7 +54,7 @@
     let myChart = document.getElementById('myChart').getContext('2d');
 
 var adminChart = new Chart(myChart, {
-    type: 'graph',
+    type: 'polarArea',
     data: {
         labels: ['Orders', 'Products', 'Users'],
         datasets: [{
@@ -76,7 +76,8 @@ var adminChart = new Chart(myChart, {
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1
+            borderWidth: 1,
+            hoverBorderWidth:3
         }]
     },
     options: {
