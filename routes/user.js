@@ -434,7 +434,7 @@ router.get('/orderdetails/:id', async (req, res) => {
     let products = await userHelpers.getOrderProducts(order)
     userHelpers.getCartCount(user).then((cartCount) => {
         userHelpers.getWishCount(user).then((wishCount) => {
-            res.render('user/orderdetails', { user, products,cartCount,wishCount })
+            res.render('user/orderdetails', { user, products, cartCount, wishCount })
         })
     })
 })
@@ -448,7 +448,13 @@ router.get('/cancelorder/:id', (req, res) => {
 
 router.get('/profile', verifyLogin, (req, res) => {
     let user = req.session.user;
-    res.render('user/profile', { user })
+    userHelpers.getUserDetails(user).then((userDetails)=>{
+    userHelpers.getCartCount(user).then((cartCount) => {
+        userHelpers.getWishCount(user).then((wishCount) => {
+                res.render('user/profile', { user,userDetails, cartCount, wishCount })
+            })
+        })
+    })
 })
 
 

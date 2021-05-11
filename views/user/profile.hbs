@@ -1,0 +1,68 @@
+<section >
+        <div class="container ">
+  <div class="row ">
+    <form id="profile_form">
+      <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputEmail">Email address</label>
+            <input type="email" class="form-control" name="email" id="email" readonly value="{{userDetails.Email}}" required>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail">Phone number</label>
+            <input type="tel" class="form-control" name="phone" id="phone" readonly value="{{userDetails.Phone}}" required>
+          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="exampleInputName">Full Name</label>
+          <input type="text" class="form-control" id="exampleInputName" id="name" readonly value="{{userDetails.Name}}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword">Password</label>
+            <input type="password" class="form-control" id="password" readonly value="password" name="password">
+          </div>
+            <button type="button" class="btn btn-danger" id="edit">edit</button>
+          <button type="submit" class="btn btn-success" id="submit" hidden>Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+</section>
+<script>
+    $('#edit').click(function(){
+        $('#name').removeAttr('readonly')
+    })
+
+    document.getElementById('submit').click(function(e){
+        var isvalid = $('#profile_form').valid()
+
+        $('#profile_form').validate({
+            rules:{
+                name:{
+                    required:true
+                },
+                email:{
+                    required:true
+                },
+                phone:{
+                    required:true
+                }
+            }
+        })
+
+        if(isvalid){
+            e.preventDefault();
+            $.ajax({
+                url:'/updateprofile',
+                type:'post',
+                data:{
+                    $('#profile_form').serialize();
+                },
+                success:((response)=>{
+                    console.log(response);
+                })
+            })
+        }
+    })
+</script>
+

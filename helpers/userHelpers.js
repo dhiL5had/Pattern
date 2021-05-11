@@ -117,37 +117,10 @@ module.exports = {
         })
     },
 
-    getAllUsers: () => {
-        return new Promise(async(resolve, reject) => {
-            let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
-            resolve(users)
-        })
-    },
-
-    activateUser: (userId) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) },
-                {
-                    $set: {
-                        State: true
-                    }
-                }
-            ).then(() => {
-                resolve()
-            })
-        })
-    },
-
-    blockUser: (userId) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) },
-                {
-                    $set: {
-                        State: false
-                    }
-                }
-            ).then(() => {
-                resolve()
+    getUserDetails:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).findOne({_id:objectId(userId)}).then((data)=>{
+                resolve(data);
             })
         })
     },

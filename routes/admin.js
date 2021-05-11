@@ -10,10 +10,10 @@ const base64ToImage = require('base64-to-image');
 
 const authenticateToken = (req, res, next) => {
     const token = req.cookies.JWT
-    if(token == null) return res.redirect('/admin/adminlog')
+    if (token == null) return res.redirect('/admin/adminlog')
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
-        if(err) return res.redirect('/admin/adminlog')
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.redirect('/admin/adminlog')
         req.user = user;
         next()
     })
@@ -21,32 +21,38 @@ const authenticateToken = (req, res, next) => {
 
 
 router.get('/', authenticateToken, (req, res) => {
-    res.render('admin/dashboard', {
-        admin: true
+    adminHelpers.productCount().then((proCount) => {
+        adminHelpers.orderCount().then((orCount) => {
+            adminHelpers.usersCount().then((userCount) => {
+                res.render('admin/dashboard', {
+                    admin: true, proCount, orCount, userCount
+                })
+            })
+        })
     })
 })
 
 router.get('/adminlog', (req, res) => {
     const token = req.cookies.JWT
-    if(token == null) return res.render('partials/admin-login',{adminlog:true})
+    if (token == null) return res.render('partials/admin-login', { adminlog: true })
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
-        if(err) return res.render('partials/admin-login',{adminlog:true})
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.render('partials/admin-login', { adminlog: true })
         req.user = user;
         res.redirect('/admin')
     })
 
-    })
+})
 
 router.post('/adminlog', (req, res) => {
     adminHelpers.adminLogin(req.body).then((response) => {
         if (response.status) {
             const token = jwt.sign({
-                user:response.admin
-            },process.env.JWT_SECRET,{expiresIn:"1h"});
-            res.cookie('JWT',token,{
-                maxAge:3600000,
-                httpOnly:true,
+                user: response.admin
+            }, process.env.JWT_SECRET, { expiresIn: "1h" });
+            res.cookie('JWT', token, {
+                maxAge: 3600000,
+                httpOnly: true,
             })
             res.redirect('/admin')
         } else {
@@ -93,7 +99,7 @@ router.post('/addproduct',
     (req, res) => {
         const errors = validationResult(req);
         if (errors.errors.length >= 1) {
-            res.send({error:'Please check the form and enter data correctley'})
+            res.send({ error: 'Please check the form and enter data correctley' })
         } else {
             let data = {
                 Name: req.body.Name,
@@ -101,11 +107,11 @@ router.post('/addproduct',
                 Quantity: parseInt(req.body.Quantity),
                 Description: req.body.Description,
             }
-            if(req.body.offerPrice !== ''){
+            if (req.body.offerPrice !== '') {
                 data.ActualPrice = parseInt(req.body.Price);
                 data.Offer = parseInt(req.body.offer);
                 data.Price = parseInt(req.body.offerPrice);
-            }else{
+            } else {
                 data.Price = parseInt(req.body.Price);
             }
             productHelpers.addProduct(data, (id) => {
@@ -146,10 +152,10 @@ router.post('/editproduct/:id',
         check('Description').notEmpty(),
     ],
     (req, res) => {
-        console.log("bodyyyy",req.body);
+        console.log("bodyyyy", req.body);
         const errors = validationResult(req);
         if (errors.errors.length >= 1) {
-            res.send({Error:'please check the form and enter the data correctly'})
+            res.send({ Error: 'please check the form and enter the data correctly' })
         } else {
             let data = {
                 Name: req.body.Name,
@@ -157,11 +163,11 @@ router.post('/editproduct/:id',
                 Quantity: parseInt(req.body.Quantity),
                 Description: req.body.Description,
             }
-            if(req.body.offer !== ''  &&  req.body.offerPrice !== '' && req.body.offerPrice !== '0'){
+            if (req.body.offer !== '' && req.body.offerPrice !== '' && req.body.offerPrice !== '0') {
                 data.ActualPrice = parseInt(req.body.Price);
                 data.Offer = parseInt(req.body.offer);
                 data.Price = parseInt(req.body.offerPrice);
-            }else{
+            } else {
                 data.Price = parseInt(req.body.Price);
             }
             let id = req.params.id;
@@ -194,22 +200,22 @@ router.get('/deleteproduct/:id', (req, res) => {
     })
 })
 
-router.get('/allusers', authenticateToken, async(req, res) => {
-    userHelpers.getAllUsers().then((users) => {
-        console.log(users);
+router.get('/allusers', authenticateToken, async (req, res) => {
+    adminHelpers.getAllUsers().then((users) => {
         res.render('admin/allusers', { admin: true, users })
     })
 })
 
 router.post('/activateuser/:id', (req, res) => {
-    userHelpers.activateUser(req.params.id).then(() => {
+    adminHelpers.activateUser(req.params.id).then(() => {
         res.redirect('/admin/allusers')
     })
 
 })
 
 router.post('/blockuser/:id', (req, res) => {
-    userHelpers.blockUser(req.params.id).then(() => {
+    console.log(req.params.id);
+    adminHelpers.blockUser(req.params.id).then(() => {
         res.redirect('/admin/allusers')
     })
 })
@@ -240,9 +246,11 @@ router.get('/allorders', authenticateToken, (req, res) => {
     })
 })
 
-router.post('/changestatus/:id', (req, res) => {
-    adminHelpers.changeOrderStatus().then(() => {
-        res.json({})
+router.post('/changestatus/', (req, res) => {
+    let data = req.body.status.split(',')
+    let [status, id] = data;
+    adminHelpers.changeOrderStatus(id,status).then(() => {
+        res.json({changed:true})
     })
 })
 

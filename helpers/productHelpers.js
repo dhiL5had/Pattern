@@ -40,13 +40,11 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTION).find({Offer:{$exists:true}}).toArray().then((products)=>{
                 resolve(products)
-                console.log("productsssss",products);
             })
         })
     },
 
     updateProduct: (proData, proId) => {
-        console.log("edit Pro",proData);
         return new Promise((resolve, reject) => {
             if(proData.Offer){
                 db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(proId)},

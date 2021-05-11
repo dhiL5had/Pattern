@@ -37,6 +37,7 @@ module.exports = {
     },
 
     changeOrderStatus:(id,status)=>{
+        console.log("iddd",i);
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(id)},{
                 $set:{status:status}
@@ -45,5 +46,65 @@ module.exports = {
         })
     },
 
+    productCount:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
+            .then((products)=>{
+                resolve(products.length)
+            })
+        })
+    },
+
+    orderCount:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION).find().toArray()
+            .then((orders)=>{
+                resolve(orders.length)
+            })
+        })
+    },
+
+    usersCount:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).find().toArray()
+            .then((users)=>{
+                resolve(users.length)
+            })
+        })
+    },
+
+    getAllUsers:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
+                resolve(users)
+            
+        })
+    },
+
+    blockUser:(id)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).updateOne({_id:objectId(id)},{
+                $set:{
+                    State:'false'
+                }
+            }).then(()=>{
+                console.log("done");
+                resolve()
+            })
+        })
+    },
+
+    activateUser:(id)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.USER_COLLECTION).updateOne({_id:objectId(id)},{
+                $set:{
+                    State:'true'
+                }
+            }).then(()=>{
+                console.log('done');
+                resolve()
+            })
+        })
+    }
 
 }

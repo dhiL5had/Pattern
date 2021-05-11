@@ -26,8 +26,9 @@
                 <td>
                 <select name="status" id="status" class="form-control">
                     <option value="{{this.status}}">{{this.status}}</option>
-                    <option value="Shipped">shipped</option>
-                    <option value="success">success</option>
+                    <option value="placed,{{this._id}}">placed</option>
+                    <option value="Shipped,{{this._id}}">shipped</option>
+                    <option value="success,{{this._id}}">success</option>
                 </select>
                 </td>
             </tr>
@@ -43,19 +44,16 @@
             $('#example').DataTable();
         });
 
-        document.getElementById('status').onchange(
+        $('#status').change(function(){
+
             $.ajax({
                 url:'/admin/changestatus',
                 method:'post',
-                data:$('#status').val(),
-
-                success:(response)=>{
-                    console.log(response.status);
-                    if(response.status){
-                        $('#status').html(response.status)
-                    }
+                data:{
+                    status:$('#status').val(),
+                    orderId:$('.orderId').val()
                 }
             })
-        )
+        })
     </script>
 </section>
