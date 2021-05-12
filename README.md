@@ -1,6 +1,6 @@
 # Pattern(E-commerce app)
 
-Pattern is a basic e-commerce app build on node.js(express.js) as 🔙🔚, mongodb as database and handlebars as 🅵🆁🅾🅽🆃 END (Ofcourse: HTML & CSS).
+Pattern is a basic e-commerce app build on node.js(express.js) as 🔙🔚, mongodb as database and handlebars as 🅵🆁🅾🅽🆃 END (Ofcourse: HTML & CSS is there).
 This Project was created from scratch with the project architecture imitated from express-generator.
 
 ## Technologies Used
