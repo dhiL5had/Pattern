@@ -18,10 +18,11 @@ User Side:
 - Login
   - Google (Passport.js)
   - OTP (Twilio)
-- Add to Cart
+- View Products and Products details 
 - Add to Wishlist
+- Add to Cart
 - Place Order
-- Payments
+- Payments Integrated
   - Razorpay
   - Paypal
   
@@ -30,4 +31,16 @@ User Side:
  
  - Login(JWT)
  - Add Products
-  - 
+   - Name, Price,Category, Quantity, Description
+   - Offer % (if any and calculate the offer price)
+   - Upload multiple images and Crop them all
+ - Create Category
+ - View the number of Orders, Active Users, Products
+ - Graph showing all the above counts
+ - User Management (Block or Activate)
+
+
+### Admin's Credentials
+
+ - email : admin@gmail.com
+ - password : @dmin
