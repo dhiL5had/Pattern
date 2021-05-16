@@ -74,9 +74,7 @@ router.get('/products', authenticateToken, (req, res) => {
             admin: true,
             products
         })
-
     })
-
 })
 
 router.get('/addproduct', authenticateToken, (req, res) => {

@@ -43,12 +43,12 @@ label {
                 <div class="col-md-5">
                     <h3>Enter Delivery Address</h3><br>
                     <div>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="address.."><br>
+                        <input type="text" class="form-control" name="address" id="address" placeholder="address.." required><br>
 
                         <div class="input-group">
                             {{!-- <span style="color: red;" id="pinError" hidden>Please check Pincode</span> --}}
                             <input type="text" class="form-control" name="pincode" id="pincode" placeholder="pincode.."
-                                autocomplete="new-password"><br>
+                                autocomplete="new-password" required><br>
 
                             <span class="input-group-btn" style="width:50px;"></span>
 
@@ -127,6 +127,7 @@ label {
 <script>
 
     function getPincode() {
+        
         $.ajax({
             url: '/pincheck',
             method: 'post',
