@@ -10,6 +10,8 @@
   <title>Dashboard - SB Admin</title>
   
   <link href="../../css/astyles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css" integrity="sha512-jO9KUHlvIF4MH/OTiio0aaueQrD38zlvFde9JoEA+AQaCNxIJoX4Kjse3sO2kqly84wc6aCtdm9BIUpYdvFYoA==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 </head>
@@ -22,11 +24,11 @@
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
+        {{!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search"
           aria-describedby="basic-addon2" />
         <div class="input-group-append">
           <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-        </div>
+        </div> --}}
       </div>
     </form>
     <!-- Navbar-->
@@ -66,6 +68,11 @@
            <a class="nav-link collapsed" href="/admin/addcategory" >
               <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
               Category
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <a class="nav-link collapsed" href="/admin/offers" >
+              <div class="sb-nav-link-icon"><i class="fas fa-percent"></i></div>
+              Offers
               <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
             {{!-- <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts1"

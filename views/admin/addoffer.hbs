@@ -1,0 +1,31 @@
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item in-active">Add Offer To Category &nbsp;<b>{{category}}</b></li>
+</ol>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-body">
+                    <span class="form-control" id="error" style="color:red; display: none;">Please fill the form
+                        correctly</span>
+                    <form id="add_form" action="/admin/catOffer/{{category}}"  method="POST">
+                        <div class="form-row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="inputLastName">Offer %</label>
+                                    <input class="form-control " id="Offer" name="Offer" type="number" required min="5"
+                                        max="100" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-4 mb-0">
+                            <input type="submit" id="add_offer" class="btn btn-primary btn-block" value="Add Offer">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

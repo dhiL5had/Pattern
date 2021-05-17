@@ -22,10 +22,10 @@
                 {{#if this.Phone}}
                 <td>{{this.Phone}}</td>
                 {{else}}
-                <td>Google/Facebook</td>
+                <td>Google</td>
                 {{/if}}
                 <td>
-                    {{#if this.State}}
+                    {{#if this.valid}}
                    <form action="/admin/blockuser/{{this._id}}" method="POST">
                     <label class="btn btn-success">Active</label>
                     <td><button type="submit" class="btn btn-danger"
@@ -37,7 +37,8 @@
                     <td><button type="submit" class="btn btn-success"
                         onclick="return confirm('Do you want to Activate {{this.Name}} ?')">Activate</button></td>
                         </form>
-                    {{/if}} 
+                    {{/if}}
+                    
                 </td>
             </tr>
                 {{/if}}

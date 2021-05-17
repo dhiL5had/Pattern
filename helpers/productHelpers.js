@@ -36,9 +36,9 @@ module.exports = {
         })
     },
 
-    getOfferProducts:()=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.PRODUCT_COLLECTION).find({Offer:{$exists:true}}).toArray().then((products)=>{
+    getOfferProducts: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.PRODUCT_COLLECTION).find({ Offer: { $exists: true } }).toArray().then((products) => {
                 resolve(products)
             })
         })
@@ -46,23 +46,23 @@ module.exports = {
 
     updateProduct: (proData, proId) => {
         return new Promise((resolve, reject) => {
-            if(proData.Offer){
-                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(proId)},
-                {
-                    $set: {
-                        Name: proData.Name,
-                        Category: proData.Category,
-                        Quantity: proData.Quantity,
-                        Description: proData.Description,
-                        Price:proData.Price,
-                        Offer:proData.Offer,
-                        ActualPrice:proData.ActualPrice
+            if (proData.Offer) {
+                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) },
+                    {
+                        $set: {
+                            Name: proData.Name,
+                            Category: proData.Category,
+                            Quantity: proData.Quantity,
+                            Description: proData.Description,
+                            Price: proData.Price,
+                            Offer: proData.Offer,
+                            ActualPrice: proData.ActualPrice
 
-                    }
-                }).then(() => {
-                    resolve()
-                })
-            }else{
+                        }
+                    }).then(() => {
+                        resolve()
+                    })
+            } else {
                 db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) },
                     {
                         $set: {
@@ -71,12 +71,12 @@ module.exports = {
                             Category: proData.Category,
                             Quantity: proData.Quantity,
                             Description: proData.Description,
-    
+
                         },
 
-                        $unset:{
-                            Offer:'',
-                            ActualPrice:''
+                        $unset: {
+                            Offer: '',
+                            ActualPrice: ''
                         }
                     }).then(() => {
                         resolve()
@@ -119,7 +119,34 @@ module.exports = {
                 resolve()
             })
         })
+    },
+
+    addCatOff: (offer, category) => {
+        return new Promise(async (resolve, reject) => {
+            let catproducts = await db.get().collection(collection.PRODUCT_COLLECTION).find({ Category: category }).toArray()
+                catproducts.forEach(product => {
+                    console.log(product);
+                    if(product.ActualPrice){
+                        let offerPrice = (product.ActualPrice/100)*offer;
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(product._id)},{
+                            $set:{
+                                Offer:offer,
+                                Price:Math.round(offerPrice)
+                            }
+                        })
+                        console.log('OfferPrice',offerPrice);
+                    }else{
+                        let offerPrice = (product.Price/100)*offer;
+                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(product._id)},{
+                            $set:{
+                                ActualPrice:product.Price,
+                                Offer:offer,
+                                Price:Math.round(offerPrice)
+                            }
+                        })
+                        
+                    }
+                });
+        })
     }
-
-
 }

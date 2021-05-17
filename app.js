@@ -3,17 +3,17 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 const path = require('path')
-const handlebars = require('handlebars'); 
+// const handlebars = require('handlebars'); 
 const hbs = require('express-handlebars');
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
 const fileUpload = require('express-fileupload')
-const session = require('express-session')
+// const session = require('express-session')
 const db = require('./config/connection')
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
 const passport = require('passport');
-const { profile } = require('console');
+// const { profile } = require('console');
 
 require('./auth');
 
@@ -32,6 +32,7 @@ app.use('/admin',adminRouter)
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 app.use(function(req, res, next) {
     res.render('user/404')

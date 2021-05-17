@@ -150,7 +150,6 @@ router.post('/editproduct/:id',
         check('Description').notEmpty(),
     ],
     (req, res) => {
-        console.log("bodyyyy", req.body);
         const errors = validationResult(req);
         if (errors.errors.length >= 1) {
             res.send({ Error: 'please check the form and enter the data correctly' })
@@ -200,6 +199,13 @@ router.get('/deleteproduct/:id', (req, res) => {
 
 router.get('/allusers', authenticateToken, async (req, res) => {
     adminHelpers.getAllUsers().then((users) => {
+      for(let i=0;i<users.length;i++){
+          if(users[i].State == 'true' || users[i].State == true){
+
+              users[i].valid = true;
+          }
+      }
+      
         res.render('admin/allusers', { admin: true, users })
     })
 })
@@ -212,7 +218,6 @@ router.post('/activateuser/:id', (req, res) => {
 })
 
 router.post('/blockuser/:id', (req, res) => {
-    console.log(req.params.id);
     adminHelpers.blockUser(req.params.id).then(() => {
         res.redirect('/admin/allusers')
     })
@@ -247,8 +252,8 @@ router.get('/allorders', authenticateToken, (req, res) => {
 router.post('/changestatus/', (req, res) => {
     let data = req.body.status.split(',')
     let [status, id] = data;
-    adminHelpers.changeOrderStatus(id,status).then(() => {
-        res.json({changed:true})
+    adminHelpers.changeOrderStatus(id, status).then(() => {
+        res.json({ changed: true })
     })
 })
 
@@ -257,6 +262,27 @@ router.get('/orderedproducts/:id', async (req, res) => {
     // userHelpers.getOrderProducts(order).then((products)=>{
     res.render('admin/orderedproducts', { admin: true })
     // })
+})
+
+router.get('/offers', authenticateToken, (req, res) => {
+    productHelpers.getOfferProducts().then((offproducts) => {
+        res.render('admin/offers', { admin: true, offproducts })
+    })
+})
+
+router.get('/addoffer/:cat', authenticateToken, (req, res) => {
+    let category = req.params.cat;
+    res.render('admin/addoffer', { admin: true, category })
+})
+
+router.post('/catOffer/:cat', (req, res) => {
+    console.log(req.body, req.params);
+    let category = req.params.cat;
+    let offer = parseInt(req.body.Offer);
+    productHelpers.addCatOff(offer, category).then(()=>{
+         
+    })
+    res.redirect('/admin/offers')
 })
 
 module.exports = router;

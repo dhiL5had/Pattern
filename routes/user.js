@@ -309,19 +309,6 @@ router.post('/removeproduct', (req, res) => {
     })
 })
 
-router.post('/pincheck', async (req, res) => {
-    let pin = req.body.pin
-    let fetch_response = await fetch(`https://api.postalpincode.in/pincode/${pin}`)
-    let json = await fetch_response.json();
-    if (json[0].Message == 'No records found') {
-        res.json({ pin: false })
-    } else {
-        let city = json[0].PostOffice[0].Name;
-        let state = json[0].PostOffice[0].State;
-        res.json({ city, state });
-    }
-})
-
 router.get('/placeorder', verifyLogin, (req, res) => {
     let user = req.session.user;
     userHelpers.getTotalAmount(user).then((total) => {
@@ -334,7 +321,7 @@ router.get('/placeorder', verifyLogin, (req, res) => {
         res.redirect('/')
     })
 })
-
+                          
 router.post('/placeorder', async (req, res) => {
     let user = req.session.user;
     req.body.userid = user;

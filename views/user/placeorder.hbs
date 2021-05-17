@@ -4,37 +4,36 @@
 **/
 
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-}
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
 
-/**
+    /**
   Component
 **/
 
-label {
-    width: 100%;
-}
+    label {
+        width: 100%;
+    }
 
-.card-input-element {
-    display: none;
-}
+    .card-input-element {
+        display: none;
+    }
 
-.card-input {
-    margin: 10px;
-    padding: 00px;
-}
+    .card-input {
+        margin: 10px;
+        padding: 00px;
+    }
 
-.card-input:hover {
-    cursor: pointer;
-}
+    .card-input:hover {
+        cursor: pointer;
+    }
 
-.card-input-element:checked + .card-input {
-     box-shadow: 0 0 1px 1px #ff7403;
- }
-
+    .card-input-element:checked+.card-input {
+        box-shadow: 0 0 1px 1px #ff7403;
+    }
 </style>
 <section>
     <div class="container mt-5">
@@ -43,7 +42,8 @@ label {
                 <div class="col-md-5">
                     <h3>Enter Delivery Address</h3><br>
                     <div>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="address.." required><br>
+                        <input type="text" class="form-control" name="address" id="address" placeholder="address.."
+                            required><br>
 
                         <div class="input-group">
                             {{!-- <span style="color: red;" id="pinError" hidden>Please check Pincode</span> --}}
@@ -109,7 +109,7 @@ label {
                             <div class="panel panel-default card-input">
                                 <div class="panel-body">
                                     {{this.address}},{{this.city}},
-                                {{this.state}},{{this.pin}}
+                                    {{this.state}},{{this.pin}}
                                 </div>
                             </div>
                         </label>
@@ -126,84 +126,80 @@ label {
 <script src="../../js/jquery.js"></script>
 <script>
 
-    function getPincode() {
-        
-        $.ajax({
-            url: '/pincheck',
-            method: 'post',
-            data: {
-                pin: $('#pincode').val(),
-            },
+    async function getPincode() {
 
-            success: (response) => {
-                console.log("pin",response);
-                if (response.pin != false) {
-                    $('#city').val(response.city);
-                    $('#state').val(response.state);
+        let pin = $('#pincode').val();
+        let url = `https://api.postalpincode.in/pincode/${pin}`;
+        const response = await fetch(url);
+        var data = await response.json();
 
-                } else {
-                    $('#pincode').val('')
-                }
-            }
-        })
+        if (data[0].PostOffice !== null) {
+            $('#city').val(data[0].PostOffice[0].Name);
+            $('#state').val(data[0].PostOffice[0].State);
+        } else {
+            $('#pincode').val('');
+            $('#city').val('');
+            $('#state').val('');
+        }
+
     }
 
     $("#placeorder").submit((e) => {
         e.preventDefault()
 
-            $('#placeorder').validate({
-                rules: {
-                    address: {
-                        required: true,
-                        maxlength: 50
-                    },
-                    pincode: {
-                        required: true,
-                        maxlength: 6,
-                        minlength: 6
-                    },
-                    mobile: {
-                        required: true,
-                        number: true,
-                        minlength: 10,
-                        maxlength: 10
-
-                    }
+        $('#placeorder').validate({
+            rules: {
+                address: {
+                    required: true,
+                    maxlength: 50
                 },
-                messages: {
-                    address: {
-                        required: "Please enter your address",
-                        maxlength: "Please enter address within 20 characters"
-                    },
-                    pincode: {
-                        required: "Please enter your pincode",
-                        maxlength: "Pincode must be 6 digits",
-                        minlength: "Pincode must be 6 digits"
-                    },
-                    mobile: {
-                        required: "Please enter your number",
-                        number: "numbers are only allowed to enter",
-                        minlength: "Please enter 10 digit number",
-                        maxlength: "Please enter 10 digit number"
-                    }
-                }
-            });
+                pincode: {
+                    required: true,
+                    maxlength: 6,
+                    minlength: 6
+                },
+                mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
 
-            $.ajax({
-                url: '/placeorder',
-                method: 'post',
-                data: $('#placeorder').serialize(),
-                success: (response) => {
-                    console.log(response);
-                    if (response.paySuccess) {
-                        location.href = '/ordersuccess'
-                    } else if (response.razorpay) {
-                        razorpayPayment(response)
-                    }else if(response.paypal){
-                        location.replace(response.paypal)
-                    }
                 }
-            })
+            },
+            messages: {
+                address: {
+                    required: "Please enter your address",
+                    maxlength: "Please enter address within 20 characters"
+                },
+                pincode: {
+                    required: "Please enter your pincode",
+                    maxlength: "Pincode must be 6 digits",
+                    minlength: "Pincode must be 6 digits"
+                },
+                mobile: {
+                    required: "Please enter your number",
+                    number: "numbers are only allowed to enter",
+                    minlength: "Please enter 10 digit number",
+                    maxlength: "Please enter 10 digit number"
+                }
+            }
+        });
+
+        $.ajax({
+            url: '/placeorder',
+            method: 'post',
+            data: $('#placeorder').serialize(),
+            success: (response) => {
+                console.log(response);
+                if (response.paySuccess) {
+                    location.href = '/ordersuccess'
+                } else if (response.razorpay) {
+                    razorpayPayment(response)
+                } else if (response.paypal) {
+                    location.replace(response.paypal)
+                }
+            }
+        })
 
 
         function razorpayPayment(order) {
