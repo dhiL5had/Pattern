@@ -37,7 +37,7 @@ module.exports = {
     },
 
     changeOrderStatus:(id,status)=>{
-        console.log("iddd",i);
+        console.log("iddd",id);
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(id)},{
                 $set:{status:status}
@@ -104,6 +104,28 @@ module.exports = {
                 console.log('done');
                 resolve()
             })
+        })
+    },
+
+    getReport:(start, end)=>{
+        return new Promise(async(resolve,reject)=>{
+            let report = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match:{date:{$gte:start, $lte:end}}
+                },
+                {
+                    $project:{
+                        deliveryDetails:1,
+                        paymentmethod:1,
+                        products:1,
+                        totalamount:1,
+                        status:1,
+                        date:1
+                    }
+                }
+            ]).toArray()
+            console.log("report",report);
+            resolve(report)
         })
     }
 }

@@ -2,6 +2,7 @@ const db = require('../config/connection');
 const collection = require('../config/collections');
 const bcrypt = require('bcrypt');
 const Razorpay = require('razorpay');
+const moment = require('moment');
 const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -467,7 +468,7 @@ module.exports = {
                 products: products,
                 totalamount: total,
                 status: paymentstatus,
-                date: new Date()
+                date:moment(new Date).format('DD/MM/YYYY')
             }
 
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) => {

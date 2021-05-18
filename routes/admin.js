@@ -2,6 +2,7 @@ var express = require('express');
 const userHelpers = require('../helpers/userHelpers');
 const adminHelpers = require('../helpers/adminHelpers');
 const productHelpers = require('../helpers/productHelpers');
+const moment = require('moment');
 const { check, validationResult } = require('express-validator');
 var router = express.Router();
 const jwt = require('jsonwebtoken');
@@ -289,6 +290,23 @@ router.get('/removeoffer/:cat', (req, res) => {
     console.log("Hello mr. perera");
     productHelpers.removeCatOff(req.params.cat).then(() => {
         res.redirect('/admin/addcategory')
+    })
+})
+
+router.get('/reports',(req,res)=>{
+    adminHelpers.getAllOrders().then((orders)=>{
+        res.render('admin/report',{admin:true, orders})
+    })
+})
+
+router.post('/updatereport',(req,res)=>{
+    console.log(req.body);
+    let start = moment(req.body.startDate).format('DD/MM/YYYY');
+    let end = moment(req.body.endDate).format('DD/MM/YYYY');
+    console.log(start, end);
+
+    adminHelpers.getReport(start,end).then((orders)=>{
+        res.render('admin/report',{admin:true, orders})
     })
 })
 
