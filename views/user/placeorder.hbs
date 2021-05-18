@@ -58,13 +58,13 @@
                         <br>
                         <div class="input-group">
 
-                            <input type="text" class="form-control" name="city" id="city" value="city.."
-                                readonly='true'><br>
+                            <input type="text" class="form-control" name="city" id="city" value="city.." readonly='true'
+                                required><br>
 
                             <span class="input-group-btn" style="width:50px;"></span>
 
                             <input type="text" name="state" id="state" class="form-control" value="state.."
-                                readonly='true' />
+                                readonly='true' required />
                         </div>
                         <br>
                         <input type="text" class="form-control" name="mobile" id="mobile" placeholder="phone.."><br>
@@ -82,19 +82,35 @@
                         <div class="payment">
                             <h4>Payment method</h4>
                             <label for="">
-                                <input type="radio" name="paymentmethod" value="COD" checked>COD
+                                <input type="radio" name="paymentmethod" value="COD" checked>&nbsp;COD
                             </label><br>
                             <label for="">
-                                <input type="radio" name="paymentmethod" value="Razorpay">Razorpay
+                                <input type="radio" name="paymentmethod" value="Razorpay">&nbsp;Razorpay
                             </label><br>
                             <label for="">
-                                <input type="radio" name="paymentmethod" value="Paypal">Paypal
+                                <input type="radio" name="paymentmethod" value="Paypal">&nbsp;Paypal
                             </label><br>
-                            <button name="addAddress" class="btn btn-warning float-end" type="submit">checkout</button>
+                            <div class="col-md-5">
+
+                                <button name="addAddress" class="btn btn-warning" id="checkout_button"
+                                    type="submit">checkout</button>
+                                <div id="paypal_button" style="display: none;"></div>
+
+
+
+                            </div>
+
                         </div>
+                        <br>
+
+
                     </div>
+
                 </div>
+
             </div>
+
+
             {{!-- {{#if add}}
             <div class="container">
 
@@ -122,9 +138,40 @@
         </form>
     </div>
 </section>
+<script src="https://www.paypal.com/sdk/js?client-id={{paypal}}&disable-funding=credit,card&currency=INR"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script src="../../js/jquery.js"></script>
 <script>
+                paypal.Buttons({
+
+                    style: {
+                        layout: 'horizontal',
+                        color: 'blue',
+                        shape: 'pill',
+                        label: 'pay',
+                        height: 40,
+                        width: 40
+                    },
+                    // Set up the transaction
+                    createOrder: function (data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: {{ total }}
+                                    }
+                }]
+                                        });
+                                    },
+
+                // Finalize the transaction
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // Show a success message to the buyer
+                        alert('Transaction completed by!');
+                        window.location.href = ('/ordersuccess')
+                    });
+                }}).render('#paypal_button')
 
     async function getPincode() {
 
@@ -196,11 +243,12 @@
                 } else if (response.razorpay) {
                     razorpayPayment(response)
                 } else if (response.paypal) {
-                    location.replace(response.paypal)
+                    console.log("responseee", response.paypal);
+                    $('#checkout_button').hide();
+                    $('#paypal_button').show()
                 }
             }
         })
-
 
         function razorpayPayment(order) {
             var options = {
@@ -247,5 +295,8 @@
             })
         }
     })
+
+
+
 
 </script>

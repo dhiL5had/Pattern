@@ -32,16 +32,27 @@
                             <table class="table table-striped table-bordered" style="width:100%">
                                 <tr align="center">
                                     <th>#Categories</th>
+                                    <th>#offer</th>
                                     <th>#Edit</th>
                                 </tr>
                                 {{#each categories}}
                                 <tr align="center">
                                     <td>
                                         {{this.newcategory}} &nbsp;&nbsp;&nbsp;
-                                        </td>
+                                    </td>
                                     <td>
-                                        <a href="/admin/addoffer/{{this.newcategory}}"  class="btn btn-success">Add offer</a>
-                                        <a href="/admin/deletecategory/{{this.newcategory}}" onclick="return confirm('Do you want to delete {{this.newcategory}} category ?')" class="btn btn-danger">Delete</a>
+                                        {{#if this.Offer}}
+                                        <a href="/admin/removeoffer/{{this.newcategory}}" class="btn btn-danger">Remove
+                                            Offer</a>
+                                        {{else}}
+                                        <a href="/admin/addoffer/{{this.newcategory}}" class="btn btn-success">Add
+                                            offer</a>
+                                        {{/if}}
+                                    </td>
+                                    <td>
+                                        <a href="/admin/deletecategory/{{this.newcategory}}"
+                                            onclick="return confirm('Do you want to delete {{this.newcategory}} category ?')"
+                                            class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 {{/each}}

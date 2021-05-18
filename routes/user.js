@@ -314,7 +314,7 @@ router.get('/placeorder', verifyLogin, (req, res) => {
     userHelpers.getTotalAmount(user).then((total) => {
         userHelpers.getCartCount(user).then((cartCount) => {
             userHelpers.getWishCount(user).then((wishCount) => {
-                res.render('user/placeorder', { user, total, cartCount, wishCount })
+                res.render('user/placeorder', { user, total, cartCount, wishCount, paypal:process.env.PAYPAL_CLIENT_ID })
             })
         })
     }).catch(() => {
@@ -344,38 +344,10 @@ router.post('/placeorder', async (req, res) => {
                 res.json({ response, razorpay: true })
             })
         } else if (req.body.paymentmethod == 'Paypal') {
-            const create_payment_json = {
-                "intent": "sandbox",
-                "payer": {
-                    "payment_method": "paypal"
-                },
-                "redirect_urls": {
-                    "return_url": "http://localhost:3001/paypalsuccess",
-                    "cancel_url": "http://localhost:3001/placeorder"
-                },
-                "transactions": [{
-                    "amount": {
-                        "currency": "INR",
-                        "total": 1000
-                    },
-                    "description": "This is a demo paypal payment"
-                }]
+            res.json({ paypal:true})
             }
-            paypal.payment.create(create_payment_json, function (error, payment) {
-                if (error) {
-                    throw errorr;
-                } else {
-                    for (let i = 0; i < payment.links.length; i++) {
-                        if (payment.links[i].rel === 'approval_url') {
-                            let paypal = payment.links[i].href;
-                            res.json({ paypal })
-                        }
-                    }
-                }
-            })
-        }
+        })
     })
-})
 
 router.get('/paypalsuccess', (req, res) => {
     userHelpers.changePaymentStatus(req.body.order.response.receipt).then(() => {

@@ -453,7 +453,7 @@ module.exports = {
 
     placeOrder: (order, products, total) => {
         return new Promise((resolve, reject) => {
-            let paymentstatus = order.paymentmethod == 'COD' ? 'placed' : 'pending';
+            let paymentstatus = order.paymentmethod == 'COD' || 'Paypal' ? 'placed' : 'pending';
             let orderObj = {
                 deliveryDetails: {
                     address: order.address,

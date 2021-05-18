@@ -14,8 +14,10 @@ module.exports = {
     },
 
     addProduct: (product, proId) => {
-        db.get().collection('products').insertOne(product).then((data) => {
-            proId(data.ops[0]._id)
+        return new Promise((resolve, reject) => {
+            db.get().collection('products').insertOne(product).then((data) => {
+                proId(data.ops[0]._id)
+            })
         })
     },
 
@@ -124,29 +126,52 @@ module.exports = {
     addCatOff: (offer, category) => {
         return new Promise(async (resolve, reject) => {
             let catproducts = await db.get().collection(collection.PRODUCT_COLLECTION).find({ Category: category }).toArray()
-                catproducts.forEach(product => {
-                    console.log(product);
-                    if(product.ActualPrice){
-                        let offerPrice = (product.ActualPrice/100)*offer;
-                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(product._id)},{
-                            $set:{
-                                Offer:offer,
-                                Price:Math.round(offerPrice)
-                            }
-                        })
-                        console.log('OfferPrice',offerPrice);
-                    }else{
-                        let offerPrice = (product.Price/100)*offer;
-                        db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectId(product._id)},{
-                            $set:{
-                                ActualPrice:product.Price,
-                                Offer:offer,
-                                Price:Math.round(offerPrice)
-                            }
-                        })
-                        
+            catproducts.forEach(product => {
+                console.log(product);
+                if (product.ActualPrice) {
+                    let offerPrice = product.ActualPrice - (product.ActualPrice * offer) / 100;
+                    db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(product._id) }, {
+                        $set: {
+                            Offer: offer,
+                            Price: Math.round(offerPrice)
+                        }
+                    })
+                    console.log('OfferPrice', offerPrice);
+                } else {
+                    let offerPrice = product.Price - (product.Price * offer) / 100;
+                    db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(product._id) }, {
+                        $set: {
+                            ActualPrice: product.Price,
+                            Offer: offer,
+                            Price: Math.round(offerPrice)
+                        }
+                    })
+
+                }
+                db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ newcategory: category }, { $set: { Offer: offer } })
+            });
+            resolve()
+        })
+    },
+
+    removeCatOff: (category) => {
+        return new Promise(async (resolve, reject) => {
+            let catProducts = await db.get().collection(collection.PRODUCT_COLLECTION).find({ Category: category }).toArray()
+            catProducts.forEach(product => {
+                console.log(product);
+                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectId(product._id) }, {
+                    $set: {
+                        Price: product.ActualPrice,
+                    },
+                    $unset: {
+                        Offer: ''
+                        // ActualPrice:''
                     }
-                });
+                })
+            })
+            console.log("I'm hereeeee");
+            db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ newcategory: category }, { $unset: { Offer: '' } })
+            resolve()
         })
     }
 }

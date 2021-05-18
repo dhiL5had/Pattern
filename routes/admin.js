@@ -199,13 +199,13 @@ router.get('/deleteproduct/:id', (req, res) => {
 
 router.get('/allusers', authenticateToken, async (req, res) => {
     adminHelpers.getAllUsers().then((users) => {
-      for(let i=0;i<users.length;i++){
-          if(users[i].State == 'true' || users[i].State == true){
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].State == 'true' || users[i].State == true) {
 
-              users[i].valid = true;
-          }
-      }
-      
+                users[i].valid = true;
+            }
+        }
+
         res.render('admin/allusers', { admin: true, users })
     })
 })
@@ -225,10 +225,11 @@ router.post('/blockuser/:id', (req, res) => {
 
 router.get('/addcategory', authenticateToken, (req, res) => {
     productHelpers.getCategories().then((categories) => {
+      
         res.render('admin/addcategory', { admin: true, categories })
     }).catch(() => {
-        res.render('admin/addcategory', { admin: true })
-    })
+            res.render('admin/addcategory', { admin: true })
+        })
 })
 
 router.post('/addcategory', (req, res) => {
@@ -272,17 +273,23 @@ router.get('/offers', authenticateToken, (req, res) => {
 
 router.get('/addoffer/:cat', authenticateToken, (req, res) => {
     let category = req.params.cat;
+
     res.render('admin/addoffer', { admin: true, category })
 })
 
 router.post('/catOffer/:cat', (req, res) => {
-    console.log(req.body, req.params);
     let category = req.params.cat;
     let offer = parseInt(req.body.Offer);
-    productHelpers.addCatOff(offer, category).then(()=>{
-         
+    productHelpers.addCatOff(offer, category).then(() => {
+        res.redirect('/admin/offers')
     })
-    res.redirect('/admin/offers')
+})
+
+router.get('/removeoffer/:cat', (req, res) => {
+    console.log("Hello mr. perera");
+    productHelpers.removeCatOff(req.params.cat).then(() => {
+        res.redirect('/admin/addcategory')
+    })
 })
 
 module.exports = router;
