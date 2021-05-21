@@ -45,6 +45,6 @@ User Side:
 - https://pattern.dhilshad.xyz
 
 ### Admin's Credentials
-
+- admin login page: https://pattern.dhilshad.xyz/admin/adminlog
  - email : admin@gmail.com
  - password : @dmin
