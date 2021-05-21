@@ -40,6 +40,10 @@ User Side:
  - User Management (Block or Activate)
 
 
+## Live Project Link
+
+- https://pattern.dhilshad.xyz
+
 ### Admin's Credentials
 
  - email : admin@gmail.com
