@@ -210,12 +210,6 @@ router.get('/google/cb', passport.authenticate('google', { failureRedirect: '/lo
         res.redirect('/');
     })
 
-router.get('/facebook', passport.authenticate('facebook', { scope: 'email' }))
-
-router.get('/facebook/cb', passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
-    (req, res) => {
-        res.redirect('/');
-    })
 
 router.get('/logout', (req, res) => {
     req.session.user = null;
@@ -258,11 +252,11 @@ router.get('/wishlist', verifyLogin, (req, res) => {
     })
 })
 
-router.get('/deletewish/:id', (req, res) => {
-    let prod = req.params.id;
+router.post('/deletewish', (req, res) => {
+    let prod = req.body.item;
     let user = req.session.user;
     userHelpers.deleteWish(prod, user).then(() => {
-        res.redirect('/wishlist')
+        res.json({wish:'deleted'})
     })
 })
 
@@ -398,10 +392,10 @@ router.get('/orderdetails/:id', async (req, res) => {
     })
 })
 
-router.get('/cancelorder/:id', (req, res) => {
-    let id = req.params.id;
+router.post('/cancelorder/', (req, res) => {
+    let id = req.body.item;
     userHelpers.cancelOrder(id).then(() => {
-        res.redirect('/orders')
+        res.json({order:'canceled'})
     })
 })
 

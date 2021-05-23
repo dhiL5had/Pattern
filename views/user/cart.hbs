@@ -1,3 +1,4 @@
+<script src="../js/addTo.js"></script>
 {{#if cart}}
 <section id="cart_items">
 	<div class="container">
@@ -48,7 +49,7 @@
 						</td>
 						<td class="cart_delete">
 							<button class="cart_quantity_delete" data-toggle="modal" data-target="#exampleModalCenter"
-								onclick="removeproduct('{{this._id}}','{{this.product._id}}')"><i
+								onclick="return confirm('Do you want to remove {{this.product.Name}} from cart')?removeproduct('{{this._id}}','{{this.product._id}}'):''"><i
 									class="fa fa-times"></i></button>
 						</td>
 					</tr>

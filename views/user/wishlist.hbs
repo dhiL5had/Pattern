@@ -36,7 +36,7 @@
 								onclick="addToCart('{{this.item}}')"><i class="fa fa-shopping-cart">Add to cart</i></a>
 						</td>
 						<td class="">
-							<a class="btn btn-warning" href="/deletewish/{{this.item}}"><i
+							<a class="btn btn-warning" onclick="return confirm(`Do you want to Remove {{this.product.Name}} from wishlist?`)?deleteWish('{{this.item}}'):''"><i
 									class="fa fa-trash-o"></i></a>
 						</td>
 					</tr>

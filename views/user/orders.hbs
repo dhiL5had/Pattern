@@ -1,3 +1,4 @@
+<script src="../js/addTo.js"></script>
 {{#if orders}}
 <section id="cart_items">
 	<div class="container">
@@ -46,7 +47,7 @@
 							</p>
 						</td>
 						<td class="col-md-2">
-							<a class="btn btn-warning" href="/cancelorder/{{this._id}}">cancel order</a>
+							<a class="btn btn-warning" onclick="return confirm('Do you want to cancel this order')?cancelOrder('{{this._id}}'):''">cancel order</a>
 						</td>
 					</tr>
 					{{/each}}

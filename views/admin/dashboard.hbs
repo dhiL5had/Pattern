@@ -1,4 +1,6 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
+    integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
+    crossorigin="anonymous"></script>
 <section>
     <main>
         <div class="container-fluid">
@@ -7,9 +9,9 @@
                 <li class="breadcrumb-item in-active">Dashboard</li>
             </ol>
             <div class="row">
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <center><u>Orders</u></center>        
+                        <center><u>Orders</u></center>
                         <div class="card-body">{{orCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
                             <a class="small text-white stretched-link" href="/admin/allorders">View orders</a>
@@ -17,9 +19,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-warning text-white mb-4">
-                        <center><u>Products</u></center>        
+                        <center><u>Products</u></center>
 
                         <div class="card-body">{{proCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -28,9 +30,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-4 col-md-6">
                     <div class="card bg-success text-white mb-4">
-                        <center><u>Users</u></center>        
+                        <center><u>Users</u></center>
 
                         <div class="card-body">{{userCount}}</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
@@ -49,40 +51,91 @@
                     </div>
                 </div> --}}
             </div>
-            </div>
+        </div>
     </main>
-    <div class="container">
-        <canvas id="myChart"></canvas>
+    <div class="row">
+        <div class="col-xl-6">
+                <canvas id="myChart1" width="100%" height="40"></canvas>
+        </div>
+        <div class="col-xl-6">
+                <canvas id="myChart" width="100%" height="40"></canvas>
+        </div>
     </div>
-</section>
+</section>  
 <script>
     let myChart = document.getElementById('myChart').getContext('2d');
+    var adminChart = new Chart(myChart, {
+        type: 'line',
+  data: {
+    labels: ['Orders', 'Products', 'Users'],
+    datasets: [{
+      label: "Numbers",
+      lineTension: 0.3,
+      backgroundColor: "rgba(2,117,216,0.2)",
+      borderColor: "rgba(2,117,216,1)",
+      pointRadius: 5,
+      pointBackgroundColor: "rgba(2,117,216,1)",
+      pointBorderColor: "rgba(255,255,255,0.8)",
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "rgba(2,117,216,1)",
+      pointHitRadius: 50,
+      pointBorderWidth: 2,
+      data: [{{ orCount }}, {{ proCount }},{{ userCount }}],
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'date'
+        },
+        gridLines: {
+          display: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 40000,
+          maxTicksLimit: 5
+        },
+        gridLines: {
+          color: "rgba(0, 0, 0, .125)",
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
 
-var adminChart = new Chart(myChart, {
-    type: 'polarArea',
-    data: {
-        labels: ['Orders', 'Products', 'Users'],
-        datasets: [{
-            label: '# of Votes',
-            data: [{{orCount}},{{proCount}},{{userCount}}],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
+    let myChart1 = document.getElementById('myChart1').getContext('2d');
+    myChart.height = 100;
+    
+
+    var adminChart1 = new Chart(myChart1, {
+        type: 'bar',
+        data: {
+            labels: ['Orders', 'Products', 'Users'],
+            datasets: [{
+                label: ['Orders', 'Products', 'Users'],
+                data: [{{ orCount }}, {{ proCount }},{{ userCount }}],
+    backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+    ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+        ],
             borderWidth: 1,
-            hoverBorderWidth:3
+                hoverBorderWidth: 3
         }]
     },
     options: {

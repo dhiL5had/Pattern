@@ -38,3 +38,29 @@ function addToWishlist(proId) {
 	})
 }
 
+function deleteWish(item){
+	$.ajax({
+		url:'/deletewish',
+		data:{
+			item:item
+		},
+		method:'post',
+
+		success:(response)=>{
+			window.location.replace('/wishlist')
+		}
+	})
+}
+
+function cancelOrder(item){
+	$.ajax({
+		url:'/cancelorder',
+		data:{
+			item:item
+		},
+		method:'post',
+		success:(response)=>{
+			window.location.replace('/orders')
+		}
+	})
+}
